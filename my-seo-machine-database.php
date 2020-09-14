@@ -19,7 +19,7 @@ class MySeoMachineDatabase
 
     private function __construct()
     {
-        //$this->update_if_needed();
+        $this->update_if_needed();
     }
 
     public function create_initial_tables()
@@ -82,20 +82,20 @@ class MySeoMachineDatabase
         $wpdb->get_results($sql);
     }
 
-    /*public function update_if_needed()
+    public function update_if_needed()
     {
         global $wpdb;
         $db_version = get_option('msm_db_version');
 
         // Updates for v2..
-        if ($db_version < $this->current_version
+        /*if ($db_version < $this->current_version
         and 2 > $db_version) {
             $sql = '';
             $wpdb->get_results($sql);
 
             ++$db_version;
-        }
+        }*/
 
         update_option('msm_db_version', $this->current_version);
-    }*/
+    }
 }

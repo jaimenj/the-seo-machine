@@ -3,16 +3,17 @@
  * Plugin Name: My SEO Machine
  * Plugin URI: https://jnjsite.com/my-seo-machine-for-wordpress/
  * License: GPLv2 or later
- * Description: A SEO machine inside a plugin to study your WordPress.
+ * Description: A SEO machine to study and improve your WordPress website.
  * Version: 0.1
  * Author: Jaime Niñoles
- * Author URI: https://jnjsite.com/.
+ * Author URI: https://jnjsite.com/
  */
 defined('ABSPATH') or die('No no no');
 define('MSM_PATH', plugin_dir_path(__FILE__));
 
 include_once MSM_PATH.'my-seo-machine-database.php';
 include_once MSM_PATH.'my-seo-machine-core.php';
+include_once MSM_PATH.'my-seo-machine-backend-controller.php';
 
 class MySeoMachine
 {
@@ -35,6 +36,7 @@ class MySeoMachine
 
         MySeoMachineDatabase::get_instance();
         MySeoMachineCore::get_instance();
+        MySeoMachineBackendController::get_instance();
     }
 
     public function activation()
