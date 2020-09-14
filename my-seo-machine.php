@@ -34,6 +34,8 @@ class MySeoMachine
         register_activation_hook(__FILE__, [$this, 'activation']);
         register_deactivation_hook(__FILE__, [$this, 'deactivation']);
 
+        add_action('admin_enqueue_scripts', [$this, 'enqueue_admin_css_js']);
+
         MySeoMachineDatabase::get_instance();
         MySeoMachineCore::get_instance();
         MySeoMachineBackendController::get_instance();
@@ -61,6 +63,15 @@ class MySeoMachine
     {
         delete_option('msm_db_version');
         delete_option('msm_report_email');
+    }
+
+    /**
+     * It adds assets only for the backend..
+     */
+    public function enqueue_admin_css_js($hook)
+    {
+        wp_enqueue_style('msm_custom_style', plugin_dir_url(__FILE__).'lib/msm.css', false, '0.1');
+        wp_enqueue_script('msm_custom_script', plugin_dir_url(__FILE__).'lib/msm.js', [], '0.1');
     }
 }
 
