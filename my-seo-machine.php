@@ -6,7 +6,7 @@
  * Description: A SEO machine to study and improve your WordPress website.
  * Version: 0.1
  * Author: Jaime Niñoles
- * Author URI: https://jnjsite.com/
+ * Author URI: https://jnjsite.com/.
  */
 defined('ABSPATH') or die('No no no');
 define('MSM_PATH', plugin_dir_path(__FILE__));
@@ -42,7 +42,10 @@ class MySeoMachine
     public function activation()
     {
         register_setting('msm_options_group', 'msm_db_version');
+        register_setting('msm_options_group', 'msm_report_email');
+
         add_option('msm_db_version', 0);
+        add_option('msm_report_email', '');
 
         MySeoMachineDatabase::get_instance()->create_initial_tables();
     }
@@ -52,6 +55,12 @@ class MySeoMachine
         MySeoMachineDatabase::get_instance()->remove_tables();
 
         unregister_setting('msm_options_group', 'msm_db_version');
+    }
+
+    public function uninstall()
+    {
+        delete_option('msm_db_version');
+        delete_option('msm_report_email');
     }
 }
 
