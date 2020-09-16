@@ -3,7 +3,7 @@
 defined('ABSPATH') or die('No no no');
 if (!current_user_can('administrator')) {
     wp_die(__('Sorry, you are not allowed to manage options for this site.'));
-} 
+}
 
 ?>
 
@@ -17,7 +17,7 @@ echo $_SERVER['REQUEST_URI'];
             Need help? Ask <a href="https://jnjsite.com/my-seo-machine-for-wordpress/" target="_blank"><b>here</b></a>.
         </span>
 
-        <h1><span class="dashicons dashicons-location-alt"></span> My SEO Machine</h1>
+        <h1><span class="dashicons dashicons-performance msm-icon"></span> My SEO Machine</h1>
         
         <?php
         if (isset($msmSms)) {
@@ -31,44 +31,29 @@ echo $_SERVER['REQUEST_URI'];
         <?php wp_nonce_field('msm', 'msm_nonce'); ?>
 
         <p>
-            <input type="submit" name="btn-submit" id="btn-submit" class="button button-green" value="Save this configs">
+            <input type="submit" name="btn-submit" id="btn-submit" class="button button-green msm-btn-submit" value="Save this configs">
 
-            <label for="items_per_page">Items per page</label>
-            <select name="items_per_page" id="items_per_page">
-                <option value="10"<?= (10 == $items_per_page ? ' selected' : ''); ?>>10</option>
-                <option value="20"<?= (20 == $items_per_page ? ' selected' : ''); ?>>20</option>
-                <option value="50"<?= (50 == $items_per_page ? ' selected' : ''); ?>>50</option>
-                <option value="100"<?= (100 == $items_per_page ? ' selected' : ''); ?>>100</option>
-                <option value="250"<?= (250 == $items_per_page ? ' selected' : ''); ?>>250</option>
-                <option value="500"<?= (500 == $items_per_page ? ' selected' : ''); ?>>500</option>
-                <option value="1000"<?= (1000 == $items_per_page ? ' selected' : ''); ?>>1000</option>
+            <label for="quantity_per_batch">Quantity per batch</label>
+            <select name="quantity_per_batch" id="quantity_per_batch">
+                <option value="1"<?= (1 == $quantity_per_batch ? ' selected' : ''); ?>>1</option>
+                <option value="2"<?= (2 == $quantity_per_batch ? ' selected' : ''); ?>>2</option>
+                <option value="5"<?= (5 == $quantity_per_batch ? ' selected' : ''); ?>>5</option>
+                <option value="10"<?= (10 == $quantity_per_batch ? ' selected' : ''); ?>>10</option>
+                <option value="25"<?= (25 == $quantity_per_batch ? ' selected' : ''); ?>>25</option>
+                <option value="50"<?= (50 == $quantity_per_batch ? ' selected' : ''); ?>>50</option>
+                <option value="100"<?= (100 == $quantity_per_batch ? ' selected' : ''); ?>>100</option>
             </select>
 
-            <label for="report_email">Report email</label>
-            <input type="text" name="report_email" id="report_email" class="regular-text" value="<?= $report_email; ?>">
-            <input type="submit" name="submit-check-email" id="submit-check-email" class="button button-green" value="Check email">
-
-            <span class="span-pagination"><?php
-
-            if ($current_page > 1) {
-                ?>
-                <input type="submit" name="submit-previous-page" id="submit-previous-page" class="button button-primary" value="<<">
-                <?php
-            }
-
-            ?>
-            <a href="<?= admin_url('tools.php?page=my-seo-machine'); ?>">Page <?= $current_page; ?> with total <?= $total_registers; ?> items</a>
-            <?php
-
-            if ($current_page * $items_per_page < $total_registers) {
-                ?>
-                <input type="submit" name="submit-next-page" id="submit-next-page" class="button button-primary" value=">>">
-                <?php
-            }
-
-            ?>
-            </span>
-            <input type="hidden" name="current-page" id="current-page" value="<?= $current_page; ?>">
+            <label for="time_between_batches">Time between batches</label>
+            <select name="time_between_batches" id="time_between_batches">
+                <option value="1"<?= (1 == $time_between_batches ? ' selected' : ''); ?>>1s</option>
+                <option value="2"<?= (2 == $time_between_batches ? ' selected' : ''); ?>>2s</option>
+                <option value="5"<?= (5 == $time_between_batches ? ' selected' : ''); ?>>5s</option>
+                <option value="10"<?= (10 == $time_between_batches ? ' selected' : ''); ?>>10s</option>
+                <option value="30"<?= (30 == $time_between_batches ? ' selected' : ''); ?>>30s</option>
+                <option value="60"<?= (60 == $time_between_batches ? ' selected' : ''); ?>>60s</option>
+                <option value="120"<?= (120 == $time_between_batches ? ' selected' : ''); ?>>120s</option>
+            </select>
         </p>
 
         <table class="wp-list-table widefat fixed striped posts">
@@ -84,7 +69,7 @@ echo $_SERVER['REQUEST_URI'];
             <tbody>
             <?php
             foreach ($results as $key => $result) {
-            ?>
+                ?>
 
                 <tr>
                     <td></td>
@@ -100,9 +85,16 @@ echo $_SERVER['REQUEST_URI'];
             </tbody>
         </table>
 
-        <p>
-            <input type="submit" name="submit-remove-all" id="submit-remove-all" class="button" value="Remove all records">
-        </p>
+        <div class="msm-footer-actions-container">
+            <div class="msm-footer-actions-container-left">
+                <button type="button" name="msm-btn-study-site" id="msm-btn-study-site" class="button button-green button-study-site">Study Site</button>
+                <span id="msm-box-study-site-status">Standby</span>
+            </div>
+            <div class="msm-footer-actions-container-right">
+                <button type="button" name="msm-btn-reset-queue" id="msm-btn-reset-queue" class="button button-red button-reset-queue">Reset Queue</button>
+                <input type="submit" name="submit-remove-all" id="submit-remove-all" class="button button-red button-remove-all" value="Remove All Data">
+            </div>
+        </div>
         
     </div>
 

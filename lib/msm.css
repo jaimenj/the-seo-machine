@@ -1,0 +1,31 @@
+.msm-icon {
+    width: 30px;
+    height: 30px;
+    font-size: 30px;
+}
+
+.msm-footer-actions-container {
+    display: flex;
+}
+
+.msm-footer-actions-container div {
+    width: 100%;
+    margin-top: 20px;
+}
+
+.msm-footer-actions-container-left {
+    text-align: left;
+}
+
+.msm-footer-actions-container-right {
+    text-align: right;
+}
+
+#msm-box-study-site-status {
+    line-height: 30px;
+    margin-left: 5px;
+}
+
+.msm-btn-submit {
+    margin-right: 5px !important;
+}

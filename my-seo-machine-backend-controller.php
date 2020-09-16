@@ -28,7 +28,7 @@ class MySeoMachineBackendController
         $capability = 'administrator';
         $menu_slug = 'my-seo-machine';
         $function = [$this, 'msm_main_admin_controller'];
-        $icon_url = 'dashicons-location-alt';
+        $icon_url = 'dashicons-performance';
         $position = null;
 
         add_menu_page($page_title, $menu_title, $capability, $menu_slug, $function, $icon_url, $position);
@@ -73,6 +73,10 @@ class MySeoMachineBackendController
                 }
             }
         }
+
+        // Main options..
+        $quantity_per_batch = get_option('msm_quantity_per_batch');
+        $time_between_batches = get_option('msm_time_between_batches');
 
         include MSM_PATH.'view/main.php';
     }
