@@ -62,11 +62,7 @@ class MySeoMachineBackendController
                 /*
                  * Handling actions..
                  */
-                if (isset($_REQUEST['submit-previous-page'])) {
-                    --$current_page;
-                } elseif (isset($_REQUEST['submit-next-page'])) {
-                    ++$current_page;
-                } elseif (isset($_REQUEST['btn-submit'])) {
+                if (isset($_REQUEST['btn-submit'])) {
                     $msmSms = $this->_save_main_configs();
                 } else {
                     $msmSms = '<div id="message" class="notice notice-success is-dismissible"><p>Cannot understand submitting!</p></div>';
@@ -79,5 +75,13 @@ class MySeoMachineBackendController
         $time_between_batches = get_option('msm_time_between_batches');
 
         include MSM_PATH.'view/main.php';
+    }
+
+    private function _save_main_configs()
+    {
+        update_option('msm_quantity_per_batch', intval($_REQUEST['quantity_per_batch']));
+        update_option('msm_time_between_batches', intval($_REQUEST['time_between_batches']));
+
+        return '<div id="message" class="notice notice-success is-dismissible"><p>Main options saved!</p></div>';
     }
 }

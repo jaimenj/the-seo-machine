@@ -18,17 +18,15 @@ echo $_SERVER['REQUEST_URI'];
         </span>
 
         <h1><span class="dashicons dashicons-performance msm-icon"></span> My SEO Machine</h1>
-        
+
         <?php
         if (isset($msmSms)) {
             echo $msmSms;
         }
+        settings_fields('msm_options_group');
+        do_settings_sections('msm_options_group');
+        wp_nonce_field('msm', 'msm_nonce');
         ?>
-
-        <?php settings_fields('msm_options_group'); ?>
-        <?php do_settings_sections('msm_options_group'); ?>
-
-        <?php wp_nonce_field('msm', 'msm_nonce'); ?>
 
         <p>
             <input type="submit" name="btn-submit" id="btn-submit" class="button button-green msm-btn-submit" value="Save this configs">
@@ -95,7 +93,7 @@ echo $_SERVER['REQUEST_URI'];
                 <input type="submit" name="submit-remove-all" id="submit-remove-all" class="button button-red button-remove-all" value="Remove All Data">
             </div>
         </div>
-        
+
     </div>
 
 </form>
