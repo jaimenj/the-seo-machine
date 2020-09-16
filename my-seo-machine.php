@@ -74,7 +74,9 @@ class MySeoMachine
     public function enqueue_admin_css_js($hook)
     {
         wp_enqueue_style('msm_custom_style', plugin_dir_url(__FILE__).'lib/msm.css', false, '0.1');
+        wp_enqueue_style('msm_datatables_style', plugin_dir_url(__FILE__).'lib/datatables.min.css', false, '0.1');
         wp_enqueue_script('msm_custom_script', plugin_dir_url(__FILE__).'lib/msm.js', [], '0.1');
+        wp_enqueue_script('msm_datatables_script', plugin_dir_url(__FILE__).'lib/datatables.min.js', [], '0.1');
     }
 }
 

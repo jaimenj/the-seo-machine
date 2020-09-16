@@ -99,3 +99,6 @@ echo $_SERVER['REQUEST_URI'];
 </form>
 <style>hr{margin-top: 30px;}</style>
 <hr>
+<script>
+    let weAreInMySEOMachine = true
+</script>
