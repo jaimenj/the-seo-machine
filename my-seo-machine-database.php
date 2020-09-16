@@ -26,7 +26,6 @@ class MySeoMachineDatabase
     {
         global $wpdb;
 
-        // Main table..
         $sql = 'CREATE TABLE '.$wpdb->prefix.'my_seo_machine_url_entity ('
             .'id INTEGER NOT NULL AUTO_INCREMENT PRIMARY KEY,'
             .'url VARCHAR(256) NOT NULL'
@@ -63,6 +62,15 @@ class MySeoMachineDatabase
             .');';
         $wpdb->get_results($sql);
 
+        $sql = 'CREATE TABLE '.$wpdb->prefix.'my_seo_machine_queue ('
+            .'id INTEGER NOT NULL AUTO_INCREMENT PRIMARY KEY,'
+            .'url VARCHAR(256) NOT NULL,'
+            .'level INTEGER NOT NULL,'
+            .'found_in_url VARCHAR(256) NOT NULL,'
+            .'visited BOOLEAN DEFAULT false'
+            .');';
+        $wpdb->get_results($sql);
+
         update_option('msm_db_version', 1);
     }
 
@@ -79,6 +87,8 @@ class MySeoMachineDatabase
         $sql = 'DROP TABLE '.$wpdb->prefix.'my_seo_machine_url_text;';
         $wpdb->get_results($sql);
         $sql = 'DROP TABLE '.$wpdb->prefix.'my_seo_machine_url_number;';
+        $wpdb->get_results($sql);
+        $sql = 'DROP TABLE '.$wpdb->prefix.'my_seo_machine_queue;';
         $wpdb->get_results($sql);
     }
 

@@ -44,10 +44,12 @@ class MySeoMachine
     public function activation()
     {
         register_setting('msm_options_group', 'msm_db_version');
-        register_setting('msm_options_group', 'msm_report_email');
+        register_setting('msm_options_group', 'msm_quantity_per_batch');
+        register_setting('msm_options_group', 'msm_time_between_batches');
 
         add_option('msm_db_version', 0);
-        add_option('msm_report_email', '');
+        add_option('msm_quantity_per_batch', '2');
+        add_option('msm_time_between_batches', '30');
 
         MySeoMachineDatabase::get_instance()->create_initial_tables();
     }
@@ -62,7 +64,8 @@ class MySeoMachine
     public function uninstall()
     {
         delete_option('msm_db_version');
-        delete_option('msm_report_email');
+        delete_option('msm_quantity_per_batch');
+        delete_option('msm_time_between_batches');
     }
 
     /**
