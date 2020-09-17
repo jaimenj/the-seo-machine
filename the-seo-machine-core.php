@@ -2,7 +2,7 @@
 
 defined('ABSPATH') or die('No no no');
 
-class MySeoMachineCore
+class TheSeoMachineCore
 {
     private static $instance;
 

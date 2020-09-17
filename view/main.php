@@ -14,22 +14,22 @@ echo $_SERVER['REQUEST_URI'];
     <div class="wrap">
         <span style="float: right">
             Support the project, please donate <a href="https://paypal.me/jaimeninoles" target="_blank"><b>here</b></a>.<br>
-            Need help? Ask <a href="https://jnjsite.com/my-seo-machine-for-wordpress/" target="_blank"><b>here</b></a>.
+            Need help? Ask <a href="https://jnjsite.com/the-seo-machine-for-wordpress/" target="_blank"><b>here</b></a>.
         </span>
 
-        <h1><span class="dashicons dashicons-performance msm-icon"></span> My SEO Machine</h1>
+        <h1><span class="dashicons dashicons-performance tsm-icon"></span> The SEO Machine</h1>
 
         <?php
-        if (isset($msmSms)) {
-            echo $msmSms;
+        if (isset($tsmSms)) {
+            echo $tsmSms;
         }
-        settings_fields('msm_options_group');
-        do_settings_sections('msm_options_group');
-        wp_nonce_field('msm', 'msm_nonce');
+        settings_fields('tsm_options_group');
+        do_settings_sections('tsm_options_group');
+        wp_nonce_field('tsm', 'tsm_nonce');
         ?>
 
         <p>
-            <input type="submit" name="btn-submit" id="btn-submit" class="button button-green msm-btn-submit" value="Save this configs">
+            <input type="submit" name="btn-submit" id="btn-submit" class="button button-green tsm-btn-submit" value="Save this configs">
 
             <label for="quantity_per_batch">Quantity per batch</label>
             <select name="quantity_per_batch" id="quantity_per_batch">
@@ -83,13 +83,13 @@ echo $_SERVER['REQUEST_URI'];
             </tbody>
         </table>
 
-        <div class="msm-footer-actions-container">
-            <div class="msm-footer-actions-container-left">
-                <button type="button" name="msm-btn-study-site" id="msm-btn-study-site" class="button button-green button-study-site">Study Site</button>
-                <span id="msm-box-study-site-status">Standby</span>
+        <div class="tsm-footer-actions-container">
+            <div class="tsm-footer-actions-container-left">
+                <button type="button" name="tsm-btn-study-site" id="tsm-btn-study-site" class="button button-green button-study-site">Study Site</button>
+                <span id="tsm-box-study-site-status">Standby</span>
             </div>
-            <div class="msm-footer-actions-container-right">
-                <button type="button" name="msm-btn-reset-queue" id="msm-btn-reset-queue" class="button button-red button-reset-queue">Reset Queue</button>
+            <div class="tsm-footer-actions-container-right">
+                <button type="button" name="tsm-btn-reset-queue" id="tsm-btn-reset-queue" class="button button-red button-reset-queue">Reset Queue</button>
                 <input type="submit" name="submit-remove-all" id="submit-remove-all" class="button button-red button-remove-all" value="Remove All Data">
             </div>
         </div>
@@ -100,5 +100,5 @@ echo $_SERVER['REQUEST_URI'];
 <style>hr{margin-top: 30px;}</style>
 <hr>
 <script>
-    let weAreInMySEOMachine = true
+    let weAreInTheSeoMachine = true
 </script>

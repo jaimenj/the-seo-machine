@@ -2,7 +2,7 @@
 
 defined('ABSPATH') or die('No no no');
 
-class MySeoMachineBackendController
+class TheSeoMachineBackendController
 {
     private static $instance;
 
@@ -23,18 +23,18 @@ class MySeoMachineBackendController
 
     public function add_admin_page()
     {
-        $page_title = 'My SEO Machine';
+        $page_title = 'The SEO Machine';
         $menu_title = $page_title;
         $capability = 'administrator';
-        $menu_slug = 'my-seo-machine';
-        $function = [$this, 'msm_main_admin_controller'];
+        $menu_slug = 'the-seo-machine';
+        $function = [$this, 'tsm_main_admin_controller'];
         $icon_url = 'dashicons-performance';
         $position = null;
 
         add_menu_page($page_title, $menu_title, $capability, $menu_slug, $function, $icon_url, $position);
     }
 
-    public function msm_main_admin_controller()
+    public function tsm_main_admin_controller()
     {
         global $current_page;
 
@@ -54,33 +54,33 @@ class MySeoMachineBackendController
 
         // Security control
         if ($submitting) {
-            if (!isset($_REQUEST['msm_nonce'])) {
-                $msmSms = '<div id="message" class="notice notice-error is-dismissible"><p>ERROR: nonce field is missing.</p></div>';
-            } elseif (!wp_verify_nonce($_REQUEST['msm_nonce'], 'msm')) {
-                $msmSms = '<div id="message" class="notice notice-error is-dismissible"><p>ERROR: invalid nonce specified.</p></div>';
+            if (!isset($_REQUEST['tsm_nonce'])) {
+                $tsmSms = '<div id="message" class="notice notice-error is-dismissible"><p>ERROR: nonce field is missing.</p></div>';
+            } elseif (!wp_verify_nonce($_REQUEST['tsm_nonce'], 'tsm')) {
+                $tsmSms = '<div id="message" class="notice notice-error is-dismissible"><p>ERROR: invalid nonce specified.</p></div>';
             } else {
                 /*
                  * Handling actions..
                  */
                 if (isset($_REQUEST['btn-submit'])) {
-                    $msmSms = $this->_save_main_configs();
+                    $tsmSms = $this->_save_main_configs();
                 } else {
-                    $msmSms = '<div id="message" class="notice notice-success is-dismissible"><p>Cannot understand submitting!</p></div>';
+                    $tsmSms = '<div id="message" class="notice notice-success is-dismissible"><p>Cannot understand submitting!</p></div>';
                 }
             }
         }
 
         // Main options..
-        $quantity_per_batch = get_option('msm_quantity_per_batch');
-        $time_between_batches = get_option('msm_time_between_batches');
+        $quantity_per_batch = get_option('tsm_quantity_per_batch');
+        $time_between_batches = get_option('tsm_time_between_batches');
 
-        include MSM_PATH.'view/main.php';
+        include tsm_PATH.'view/main.php';
     }
 
     private function _save_main_configs()
     {
-        update_option('msm_quantity_per_batch', intval($_REQUEST['quantity_per_batch']));
-        update_option('msm_time_between_batches', intval($_REQUEST['time_between_batches']));
+        update_option('tsm_quantity_per_batch', intval($_REQUEST['quantity_per_batch']));
+        update_option('tsm_time_between_batches', intval($_REQUEST['time_between_batches']));
 
         return '<div id="message" class="notice notice-success is-dismissible"><p>Main options saved!</p></div>';
     }

@@ -2,7 +2,7 @@
 
 defined('ABSPATH') or die('No no no');
 
-class MySeoMachineDatabase
+class TheSeoMachineDatabase
 {
     private static $instance;
 
@@ -26,19 +26,19 @@ class MySeoMachineDatabase
     {
         global $wpdb;
 
-        $sql = 'CREATE TABLE '.$wpdb->prefix.'my_seo_machine_url_entity ('
+        $sql = 'CREATE TABLE '.$wpdb->prefix.'the_seo_machine_url_entity ('
             .'id INTEGER NOT NULL AUTO_INCREMENT PRIMARY KEY,'
             .'url VARCHAR(256) NOT NULL'
             .');';
         $wpdb->get_results($sql);
 
-        $sql = 'CREATE TABLE '.$wpdb->prefix.'my_seo_machine_url_eav_attribute ('
+        $sql = 'CREATE TABLE '.$wpdb->prefix.'the_seo_machine_url_eav_attribute ('
             .'code VARCHAR(16) NOT NULL,'
             .'type VARCHAR(16) NOT NULL'
             .');';
         $wpdb->get_results($sql);
 
-        $sql = 'CREATE TABLE '.$wpdb->prefix.'my_seo_machine_url_string ('
+        $sql = 'CREATE TABLE '.$wpdb->prefix.'the_seo_machine_url_string ('
             .'id INTEGER NOT NULL AUTO_INCREMENT PRIMARY KEY,'
             .'id_url INTEGER NOT NULL,'
             .'code VARCHAR(16) NOT NULL,'
@@ -46,7 +46,7 @@ class MySeoMachineDatabase
             .');';
         $wpdb->get_results($sql);
 
-        $sql = 'CREATE TABLE '.$wpdb->prefix.'my_seo_machine_url_text ('
+        $sql = 'CREATE TABLE '.$wpdb->prefix.'the_seo_machine_url_text ('
             .'id INTEGER NOT NULL AUTO_INCREMENT PRIMARY KEY,'
             .'id_url INTEGER NOT NULL,'
             .'code VARCHAR(16) NOT NULL,'
@@ -54,7 +54,7 @@ class MySeoMachineDatabase
             .');';
         $wpdb->get_results($sql);
 
-        $sql = 'CREATE TABLE '.$wpdb->prefix.'my_seo_machine_url_number ('
+        $sql = 'CREATE TABLE '.$wpdb->prefix.'the_seo_machine_url_number ('
             .'id INTEGER NOT NULL AUTO_INCREMENT PRIMARY KEY,'
             .'id_url INTEGER NOT NULL,'
             .'code VARCHAR(16) NOT NULL,'
@@ -62,7 +62,7 @@ class MySeoMachineDatabase
             .');';
         $wpdb->get_results($sql);
 
-        $sql = 'CREATE TABLE '.$wpdb->prefix.'my_seo_machine_queue ('
+        $sql = 'CREATE TABLE '.$wpdb->prefix.'the_seo_machine_queue ('
             .'id INTEGER NOT NULL AUTO_INCREMENT PRIMARY KEY,'
             .'url VARCHAR(256) NOT NULL,'
             .'level INTEGER NOT NULL,'
@@ -71,31 +71,31 @@ class MySeoMachineDatabase
             .');';
         $wpdb->get_results($sql);
 
-        update_option('msm_db_version', 1);
+        update_option('tsm_db_version', 1);
     }
 
     public function remove_tables()
     {
         global $wpdb;
 
-        $sql = 'DROP TABLE '.$wpdb->prefix.'my_seo_machine_url_entity;';
+        $sql = 'DROP TABLE '.$wpdb->prefix.'the_seo_machine_url_entity;';
         $wpdb->get_results($sql);
-        $sql = 'DROP TABLE '.$wpdb->prefix.'my_seo_machine_url_eav_attribute;';
+        $sql = 'DROP TABLE '.$wpdb->prefix.'the_seo_machine_url_eav_attribute;';
         $wpdb->get_results($sql);
-        $sql = 'DROP TABLE '.$wpdb->prefix.'my_seo_machine_url_string;';
+        $sql = 'DROP TABLE '.$wpdb->prefix.'the_seo_machine_url_string;';
         $wpdb->get_results($sql);
-        $sql = 'DROP TABLE '.$wpdb->prefix.'my_seo_machine_url_text;';
+        $sql = 'DROP TABLE '.$wpdb->prefix.'the_seo_machine_url_text;';
         $wpdb->get_results($sql);
-        $sql = 'DROP TABLE '.$wpdb->prefix.'my_seo_machine_url_number;';
+        $sql = 'DROP TABLE '.$wpdb->prefix.'the_seo_machine_url_number;';
         $wpdb->get_results($sql);
-        $sql = 'DROP TABLE '.$wpdb->prefix.'my_seo_machine_queue;';
+        $sql = 'DROP TABLE '.$wpdb->prefix.'the_seo_machine_queue;';
         $wpdb->get_results($sql);
     }
 
     public function update_if_needed()
     {
         global $wpdb;
-        $db_version = get_option('msm_db_version');
+        $db_version = get_option('tsm_db_version');
 
         // Updates for v2..
         /*if ($db_version < $this->current_version
@@ -106,6 +106,6 @@ class MySeoMachineDatabase
             ++$db_version;
         }*/
 
-        update_option('msm_db_version', $this->current_version);
+        update_option('tsm_db_version', $this->current_version);
     }
 }

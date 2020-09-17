@@ -2,7 +2,7 @@
 
 defined('ABSPATH') or die('No no no');
 
-class MySeoMachineAjaxController
+class TheSeoMachineAjaxController
 {
     private static $instance;
 
@@ -17,10 +17,10 @@ class MySeoMachineAjaxController
 
     private function __construct()
     {
-        add_action('wp_ajax_msm_urls', [$this, 'msm_urls']);
+        add_action('wp_ajax_tsm_urls', [$this, 'tsm_urls']);
     }
 
-    public function msm_urls()
+    public function tsm_urls()
     {
         if (!current_user_can('administrator')) {
             wp_die(__('Sorry, you are not allowed to manage options for this site.'));

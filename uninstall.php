@@ -5,6 +5,6 @@ if (!defined('WP_UNINSTALL_PLUGIN')) {
     die;
 }
 
-include_once 'my-seo-machine.php';
+include_once 'the-seo-machine.php';
 
-MySeoMachine::get_instance()->uninstall();
+TheSeoMachine::get_instance()->uninstall();
