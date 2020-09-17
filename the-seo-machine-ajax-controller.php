@@ -22,6 +22,7 @@ class TheSeoMachineAjaxController
         add_action('wp_ajax_tsm_do_batch', [$this, 'tsm_do_batch']);
     }
 
+    // TODO
     public function tsm_urls()
     {
         if (!current_user_can('administrator')) {
@@ -99,7 +100,7 @@ class TheSeoMachineAjaxController
                 .'ORDER BY id ASC '
                 .'LIMIT '.$quantity_per_batch.';');
             foreach ($next_urls as $next_url) {
-                TheSeoMachineCore::get_instance()->study($next_urls);
+                TheSeoMachineCore::get_instance()->study($next_url);
             }
             $status = 'processing';
         } else {
