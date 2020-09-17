@@ -18,7 +18,6 @@ class TheSeoMachineBackendController
     private function __construct()
     {
         add_action('admin_menu', [$this, 'add_admin_page']);
-        add_action('init', [$this, 'wgo_download_current_regexes_controller']);
     }
 
     public function add_admin_page()
