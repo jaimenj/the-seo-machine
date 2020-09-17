@@ -46,17 +46,28 @@ class TheSeoMachineAjaxController
         }
 
         global $wpdb;
+        $status = '';
 
-        // Check if empty..
+        // Count items..
+        $num_urls_in_queue = $wpdb->get_var(
+            'SELECT count(*) FROM '.$wpdb->prefix.'the_seo_machine_queue;');
+        $num_urls_in_queue_not_visited = $wpdb->get_var(
+            'SELECT count(*) FROM '.$wpdb->prefix.'the_seo_machine_queue '
+            .'WHERE visited <> true;');
 
-        // Check if processing..
-
-        // Check if finished..
-
-        $sql = 'SELECT ..';
-        $results = $wpdb->get_results($sql);
+        // Check status..
+        if ($num_urls_in_queue > 0) {
+            if ($num_urls_in_queue_not_visited > 0) {
+                $status = 'processing';
+            } else {
+                $status = 'finished';
+            }
+        } else {
+            $status = 'empty';
+        }
 
         // Return data..
+        echo $status;
 
         wp_die();
     }
@@ -68,19 +79,35 @@ class TheSeoMachineAjaxController
         }
 
         global $wpdb;
+        $status = '';
+        $quantity_per_batch = get_option('tsm_quantity_per_batch');
 
-        $sql = 'SELECT count(*) FROM ';
-        $results = $wpdb->get_results($sql);
+        $num_urls_in_queue = $wpdb->get_var(
+            'SELECT count(*) FROM '.$wpdb->prefix.'the_seo_machine_queue;');
+        $num_urls_in_queue_not_visited = $wpdb->get_var(
+                'SELECT count(*) FROM '.$wpdb->prefix.'the_seo_machine_queue '
+                .'WHERE visited <> true;');
 
         // If starting study..
-
-
-        // Request data to the DB..
-        
-
-        
+        if (0 == $num_urls_in_queue) {
+            TheSeoMachineCore::get_instance()->study(get_site_url());
+            $status = 'processing';
+        } elseif ($num_urls_in_queue_not_visited > 0) {
+            $next_urls = $wpdb->get_var(
+                'SELECT url FROM '.$wpdb->prefix.'the_seo_machine_queue '
+                .'WHERE visited <> true '
+                .'ORDER BY id ASC '
+                .'LIMIT '.$quantity_per_batch.';');
+            foreach ($next_urls as $next_url) {
+                TheSeoMachineCore::get_instance()->study($next_urls);
+            }
+            $status = 'processing';
+        } else {
+            $status = 'finished';
+        }
 
         // Return data..
+        echo $status;
 
         wp_die();
     }
