@@ -5,6 +5,7 @@ defined('ABSPATH') or die('No no no');
 class TheSeoMachineCore
 {
     private static $instance;
+    private $dom;
 
     public static function get_instance()
     {
@@ -17,6 +18,7 @@ class TheSeoMachineCore
 
     private function __construct()
     {
+        $this->dom = new \DOMDocument();
     }
 
     // TODO
@@ -55,12 +57,11 @@ class TheSeoMachineCore
         }
 
         curl_close($curl);
-
-        echo 'HTML: '.$html.' HTTP_CODE: '.$http_code.PHP_EOL;
     }
 
     private function _prepare_url_insights_data($curl, &$data)
     {
+        $dom = $this->dom;
         @$dom->loadHTML($curl->response);
 
         $data['title'] = '';
@@ -173,7 +174,7 @@ class TheSeoMachineCore
 
     private function _get_content_study($dom, $maxReturn = 20)
     {
-        $linesOfText = $this->_getCleanBodyTextInLines($dom);
+        $linesOfText = $this->_get_clean_body_text_in_lines($dom);
 
         $keywords = [];
         $words = [];
@@ -206,5 +207,24 @@ class TheSeoMachineCore
         $extraData = 'Total words: '.$totalWords.' different ones: '.count($words);
 
         return implode(',', $keywordsReturn).' ### '.$extraData;
+    }
+
+    private function _get_clean_body_text_in_lines($dom)
+    {
+        while (($r = $dom->getElementsByTagName('script')) && $r->length) {
+            $r->item(0)->parentNode->removeChild($r->item(0));
+        }
+        $body = $dom->saveHTML($dom->getElementsByTagName('body')->item(0));
+        $lines = explode(PHP_EOL, strip_tags(str_replace('</', PHP_EOL.'</', $body)));
+        $linesFiltered = [];
+        foreach ($lines as $key => $value) {
+            if ('' == trim($value)) {
+                unset($lines[$key]);
+            } else {
+                $linesFiltered[] = trim($value);
+            }
+        }
+
+        return $linesFiltered;
     }
 }
