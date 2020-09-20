@@ -61,8 +61,12 @@ class TheSeoMachineBackendController
                 /*
                  * Handling actions..
                  */
-                if (isset($_REQUEST['btn-submit'])) {
+                if (isset($_REQUEST['tsm-submit'])) {
                     $tsmSms = $this->_save_main_configs();
+                } elseif(isset($_REQUEST['tsm-submit-reset-queue'])) {
+                    $tsmSms = $this->_reset_queue();
+                } elseif(isset($_REQUEST['tsm-submit-remove-all'])) {
+                    $tsmSms = $this->_remove_all_data();
                 } else {
                     $tsmSms = '<div id="message" class="notice notice-success is-dismissible"><p>Cannot understand submitting!</p></div>';
                 }
@@ -82,5 +86,25 @@ class TheSeoMachineBackendController
         update_option('tsm_time_between_batches', intval($_REQUEST['time_between_batches']));
 
         return '<div id="message" class="notice notice-success is-dismissible"><p>Main options saved!</p></div>';
+    }
+
+    private function _reset_queue(){
+        global $wpdb;
+
+        $wpdb->get_results('TRUNCATE '.$wpdb->prefix.'the_seo_machine_queue;');
+
+        return '<div id="message" class="notice notice-success is-dismissible"><p>Queue truncated!</p></div>';
+    }
+
+    private function _remove_all_data(){
+        global $wpdb;
+        
+        $wpdb->get_results('TRUNCATE '.$wpdb->prefix.'the_seo_machine_queue;');
+        $wpdb->get_results('TRUNCATE '.$wpdb->prefix.'the_seo_machine_url_entity;');
+        $wpdb->get_results('TRUNCATE '.$wpdb->prefix.'the_seo_machine_url_string;');
+        $wpdb->get_results('TRUNCATE '.$wpdb->prefix.'the_seo_machine_url_text;');
+        $wpdb->get_results('TRUNCATE '.$wpdb->prefix.'the_seo_machine_url_number;');
+
+        return '<div id="message" class="notice notice-success is-dismissible"><p>Queue and URLs data truncated!</p></div>';
     }
 }

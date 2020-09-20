@@ -29,7 +29,7 @@ echo $_SERVER['REQUEST_URI'];
         ?>
 
         <p>
-            <input type="submit" name="btn-submit" id="btn-submit" class="button button-green tsm-btn-submit" value="Save this configs">
+            <input type="submit" name="tsm-submit" id="tsm-submit" class="button button-green tsm-btn-submit" value="Save this configs">
 
             <label for="quantity_per_batch">Quantity per batch</label>
             <select name="quantity_per_batch" id="quantity_per_batch">
@@ -89,8 +89,8 @@ echo $_SERVER['REQUEST_URI'];
                 <span id="tsm-box-study-site-status">Standby</span>
             </div>
             <div class="tsm-footer-actions-container-right">
-                <button type="button" name="tsm-btn-reset-queue" id="tsm-btn-reset-queue" class="button button-red button-reset-queue">Reset Queue</button>
-                <input type="submit" name="submit-remove-all" id="submit-remove-all" class="button button-red button-remove-all" value="Remove All Data">
+                <button type="submit" name="tsm-submit-reset-queue" id="tsm-submit-reset-queue" class="button button-red button-reset-queue">Reset Queue</button>
+                <button type="submit" name="tsm-submit-remove-all" id="tsm-submit-remove-all" class="button button-red button-remove-all">Remove All Data</button>
             </div>
         </div>
 
