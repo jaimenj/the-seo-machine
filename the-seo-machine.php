@@ -75,9 +75,9 @@ class TheSeoMachine
      */
     public function enqueue_admin_css_js($hook)
     {
-        wp_enqueue_style('tsm_custom_style', plugin_dir_url(__FILE__).'lib/tsm.css', false, '0.1');
+        wp_enqueue_style('tsm_custom_style', plugin_dir_url(__FILE__).'lib/tsm.min.css', false, '0.1');
         wp_enqueue_style('tsm_datatables_style', plugin_dir_url(__FILE__).'lib/datatables.min.css', false, '0.1');
-        wp_enqueue_script('tsm_custom_script', plugin_dir_url(__FILE__).'lib/tsm.js', [], '0.1');
+        wp_enqueue_script('tsm_custom_script', plugin_dir_url(__FILE__).'lib/tsm.min.js', [], '0.1');
         wp_enqueue_script('tsm_datatables_script', plugin_dir_url(__FILE__).'lib/datatables.min.js', [], '0.1');
     }
 }

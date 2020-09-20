@@ -1,0 +1,31 @@
+.tsm-icon {
+    width: 30px;
+    height: 30px;
+    font-size: 30px;
+}
+
+.tsm-footer-actions-container {
+    display: flex;
+}
+
+.tsm-footer-actions-container div {
+    width: 100%;
+    margin-top: 20px;
+}
+
+.tsm-footer-actions-container-left {
+    text-align: left;
+}
+
+.tsm-footer-actions-container-right {
+    text-align: right;
+}
+
+#tsm-box-study-site-status {
+    line-height: 30px;
+    margin-left: 5px;
+}
+
+.tsm-btn-submit {
+    margin-right: 5px !important;
+}
