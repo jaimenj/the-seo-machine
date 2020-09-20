@@ -46,8 +46,6 @@ class TheSeoMachineCore
                 'url' => $current_url->url,
                 'updated_at' => date('Y-m-d H:i:s'),
                 'level' => $current_url->level,
-                'http_code' => $http_code,
-                'title' => ($dom->getElementsByTagName('title')->length > 0 ? $dom->getElementsByTagName('title')[0]->textContent : ''),
             ];
 
             $this->_prepare_url_insights_data($curl, $data);
