@@ -125,6 +125,7 @@ class TheSeoMachineDatabase
         }
     }
 
+    // TODO
     public function save_url($data){
         global $wpdb;
 
