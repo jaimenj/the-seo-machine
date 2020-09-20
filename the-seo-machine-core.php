@@ -7,6 +7,7 @@ class TheSeoMachineCore
     private static $instance;
     private $dom;
     private $response_html;
+    private $current_item;
 
     public static function get_instance()
     {
@@ -23,12 +24,13 @@ class TheSeoMachineCore
     }
 
     // TODO
-    public function study($current_url)
+    public function study($current_item)
     {
         global $wpdb;
+        $this->current_item = $current_item;
 
         $curl = curl_init();
-        curl_setopt($curl, CURLOPT_URL, $current_url->url);
+        curl_setopt($curl, CURLOPT_URL, $current_item->url);
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
         $this->response_html = curl_exec($curl);
         $http_code = curl_getinfo($curl, CURLINFO_HTTP_CODE);
@@ -39,16 +41,16 @@ class TheSeoMachineCore
 
             TheSeoMachineDatabase::get_instance()->save_url_in_queue(
                 $url_redirect,
-                ($current_url->level + 1),
-                $current_url->url
+                ($current_item->level + 1),
+                $current_item->url
             );
         } else {
             // It's a normal URL, saving..
 
             $data = [
-                'url' => $current_url->url,
+                'url' => $current_item->url,
                 'updated_at' => date('Y-m-d H:i:s'),
-                'level' => $current_url->level,
+                'level' => $current_item->level,
             ];
 
             $this->_prepare_url_insights_data($curl, $data);
@@ -121,10 +123,30 @@ class TheSeoMachineCore
         $data['qty_ps'] = $dom->getElementsByTagName('p')->length;
         $data['qty_total_links'] = $dom->getElementsByTagName('a')->length;
 
+        // The links..
         $data['qty_internal_links'] = $data['qty_external_links'] = $data['qty_targeted_links'] = 0;
         foreach ($dom->getElementsByTagName('a') as $linkNode) {
-            if (substr($linkNode->getAttribute('href'), 0, strlen($theSite)) == $theSite) {
+            if (substr($linkNode->getAttribute('href'), 0, strlen(get_site_url())) == get_site_url()) {
                 ++$data['qty_internal_links'];
+
+                // TODO
+                $new_url = $linkNode->getAttribute('href');
+                if (!empty(trim($new_url))
+                and '#' != substr($new_url, 0, 1)
+                and 'email:' != substr($new_url, 0, 6)
+                and 'mailto:' != substr($new_url, 0, 7)
+                and 'tel:' != substr($new_url, 0, 4)
+                and 'skype:' != substr($new_url, 0, 6)
+                and 'javascript:' != substr($new_url, 0, 11)
+                and 'whatsapp:' != substr($new_url, 0, 9)) {
+                    $new_url = $this->_prepare_new_url($new_url);
+
+                    TheSeoMachineDatabase::get_instance()->save_url_in_queue(
+                        $new_url,
+                        $this->current_item->level + 1,
+                        $this->current_item->url
+                    );
+                }
             } else {
                 ++$data['qty_external_links'];
             }
@@ -217,15 +239,44 @@ class TheSeoMachineCore
         }
         $body = $dom->saveHTML($dom->getElementsByTagName('body')->item(0));
         $lines = explode(PHP_EOL, strip_tags(str_replace('</', PHP_EOL.'</', $body)));
-        $linesFiltered = [];
+        $lines_filtered = [];
         foreach ($lines as $key => $value) {
             if ('' == trim($value)) {
                 unset($lines[$key]);
             } else {
-                $linesFiltered[] = trim($value);
+                $lines_filtered[] = trim($value);
             }
         }
 
-        return $linesFiltered;
+        return $lines_filtered;
+    }
+
+    private function _prepare_new_url($new_url)
+    {
+        // remove query string
+        $new_url = preg_replace('/\?.*/', '', $new_url);
+
+        // remove anchors
+        $new_url = preg_replace('/#.*/', '', $new_url);
+
+        // relative and absolute URLs
+        if ('http' != substr($new_url, 0, 4)) {
+            if ('//' == substr($new_url, 0, 2)) {
+                if ('https' == substr($this->current_item->url, 0, 5)) {
+                    $new_url = 'https:'.$new_url;
+                } else {
+                    $new_url = 'http:'.$new_url;
+                }
+            } elseif ('/' == substr($new_url, 0, 1)) {
+                $new_url = ('/' == substr(get_site_url(), -1) ? get_site_url() : get_site_url().'/')
+                    .substr($new_url, 1, strlen($new_url) - 1);
+            }
+        }
+
+        if (get_site_url() == $new_url and '/' != substr($new_url, -1)) {
+            $new_url .= '/';
+        }
+
+        return $new_url;
     }
 }

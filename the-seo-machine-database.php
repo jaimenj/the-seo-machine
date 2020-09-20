@@ -163,26 +163,25 @@ class TheSeoMachineDatabase
         update_option('tsm_db_version', $this->current_version);
     }
 
-    public function save_url_in_queue($url_redirect, $level, $found_in_url)
+    public function save_url_in_queue($new_url, $level, $found_in_url)
     {
         global $wpdb;
 
-        $url_redirect_count = $wpdb->get_var(
+        $new_url_count = $wpdb->get_var(
             'SELECT count(*) FROM '.$wpdb->prefix.'the_seo_machine_queue '
-            ."WHERE url LIKE '".$url_redirect."';"
+            ."WHERE url LIKE '".$new_url."';"
         );
 
         // If URL doesn't exists, add it..
-        if (0 == $url_redirect_count) {
-            $wpdb->get_var(
+        if (0 == $new_url_count) {
+            $wpdb->get_results(
                 'INSERT INTO '.$wpdb->prefix.'the_seo_machine_queue (url, level, found_in_url, visited) '
-                ."VALUES ('".$url_redirect."', ".$level.", '".$found_in_url."', false)");
+                ."VALUES ('".$new_url."', ".$level.", '".$found_in_url."', false)");
         }
     }
 
     public function save_url($data)
     {
-        var_dump($data);
         global $wpdb;
 
         $results = $wpdb->get_results(

@@ -92,7 +92,7 @@ class TheSeoMachineAjaxController
         // If starting study..
         if (0 == $num_urls_in_queue) {
             TheSeoMachineDatabase::get_instance()->save_url_in_queue(
-                get_site_url(),
+                '/' == substr(get_site_url(), -1) ? get_site_url() : get_site_url().'/',
                 0,
                 'ENTRY_POINT'
             );
