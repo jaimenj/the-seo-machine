@@ -180,9 +180,53 @@ class TheSeoMachineDatabase
         }
     }
 
-    // TODO
     public function save_url($data)
     {
         global $wpdb;
+
+        $results = $wpdb->get_results(
+            'SELECT * FROM '.$wpdb->prefix.'the_seo_machine_url_entity '
+            ."WHERE url LIKE '".$data['url']."';"
+        );
+
+        
+        if(empty($results)) {
+            // New URL..
+            $wpdb->get_results(
+                'INSERT INTO '.$wpdb->prefix.'the_seo_machine_url_entity (url) '
+                ."VALUES ('".$data['url']."');"
+            );
+            $id_url = $wpdb->get_var(
+                'SELECT id FROM '.$wpdb->prefix.'the_seo_machine_url_entity '
+                ."WHERE url LIKE '".$data['url']."';"
+            );
+            
+
+        } else {
+            // If updating an existing URL, remove the old values..
+            $id_url = $results->id;
+
+            $wpdb->get_results(
+                'REMOVE FROM '.$wpdb->prefix.'the_seo_machine_url_string '
+                .'WHERE id_url = '.$id_url.';'
+            );
+            $wpdb->get_results(
+                'REMOVE FROM '.$wpdb->prefix.'the_seo_machine_url_text '
+                .'WHERE id_url = '.$id_url.';'
+            );
+            $wpdb->get_results(
+                'REMOVE FROM '.$wpdb->prefix.'the_seo_machine_url_number '
+                .'WHERE id_url = '.$id_url.';'
+            );
+        }
+
+        // Finally insert the new data values..
+        foreach ($data as $key => $value) {
+            $wpdb->get_results(
+                'INSERT INTO '.$wpdb->prefix.'the_seo_machine_url_'
+                .TheSeoMachineDatabase::get_instance()->_get_eav_attributes()[$key].' (id_url, code, value) '
+                ."VALUES ('".$id_url."', '".$key."', '".$value."');"
+            );
+        }
     }
 }
