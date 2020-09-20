@@ -14,6 +14,7 @@ define('tsm_PATH', plugin_dir_path(__FILE__));
 include_once tsm_PATH.'the-seo-machine-database.php';
 include_once tsm_PATH.'the-seo-machine-core.php';
 include_once tsm_PATH.'the-seo-machine-backend-controller.php';
+include_once tsm_PATH.'the-seo-machine-ajax-controller.php';
 
 class TheSeoMachine
 {
@@ -39,6 +40,7 @@ class TheSeoMachine
         TheSeoMachineDatabase::get_instance();
         TheSeoMachineCore::get_instance();
         TheSeoMachineBackendController::get_instance();
+        TheSeoMachineAjaxController::get_instance();
     }
 
     public function activation()

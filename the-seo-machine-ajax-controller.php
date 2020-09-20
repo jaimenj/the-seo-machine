@@ -86,21 +86,26 @@ class TheSeoMachineAjaxController
         $num_urls_in_queue = $wpdb->get_var(
             'SELECT count(*) FROM '.$wpdb->prefix.'the_seo_machine_queue;');
         $num_urls_in_queue_not_visited = $wpdb->get_var(
-                'SELECT count(*) FROM '.$wpdb->prefix.'the_seo_machine_queue '
-                .'WHERE visited <> true;');
+            'SELECT count(*) FROM '.$wpdb->prefix.'the_seo_machine_queue '
+            .'WHERE visited <> true;');
 
         // If starting study..
         if (0 == $num_urls_in_queue) {
             TheSeoMachineCore::get_instance()->study(get_site_url());
             $status = 'processing';
         } elseif ($num_urls_in_queue_not_visited > 0) {
-            $next_urls = $wpdb->get_var(
+            $next_queue_urls = $wpdb->get_results(
                 'SELECT url FROM '.$wpdb->prefix.'the_seo_machine_queue '
                 .'WHERE visited <> true '
                 .'ORDER BY id ASC '
                 .'LIMIT '.$quantity_per_batch.';');
-            foreach ($next_urls as $next_url) {
-                TheSeoMachineCore::get_instance()->study($next_url);
+
+            foreach ($next_queue_urls as $next_queue_url) {
+                TheSeoMachineCore::get_instance()->study($next_queue_url);
+
+                $wpdb->get_results(
+                    'UPDATE '.$wpdb->prefix.'the_seo_machine_queue '
+                    .'SET visited = true WHERE id = '.$next_queue_url->id);
             }
             $status = 'processing';
         } else {
