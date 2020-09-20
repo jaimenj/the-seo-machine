@@ -37,3 +37,4 @@ function watchJs() {
 exports.css = css
 exports.js = js
 exports.watch = gulp.parallel(watchCss, watchJs)
+exports.default = this.watch

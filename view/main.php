@@ -35,17 +35,19 @@ echo $_SERVER['REQUEST_URI'];
             <select name="quantity_per_batch" id="quantity_per_batch">
                 <option value="1"<?= (1 == $quantity_per_batch ? ' selected' : ''); ?>>1</option>
                 <option value="2"<?= (2 == $quantity_per_batch ? ' selected' : ''); ?>>2</option>
+                <option value="3"<?= (3 == $quantity_per_batch ? ' selected' : ''); ?>>3</option>
+                <option value="4"<?= (4 == $quantity_per_batch ? ' selected' : ''); ?>>4</option>
                 <option value="5"<?= (5 == $quantity_per_batch ? ' selected' : ''); ?>>5</option>
+                <option value="6"<?= (6 == $quantity_per_batch ? ' selected' : ''); ?>>6</option>
+                <option value="7"<?= (7 == $quantity_per_batch ? ' selected' : ''); ?>>7</option>
+                <option value="8"<?= (8 == $quantity_per_batch ? ' selected' : ''); ?>>8</option>
+                <option value="9"<?= (9 == $quantity_per_batch ? ' selected' : ''); ?>>9</option>
                 <option value="10"<?= (10 == $quantity_per_batch ? ' selected' : ''); ?>>10</option>
-                <option value="25"<?= (25 == $quantity_per_batch ? ' selected' : ''); ?>>25</option>
-                <option value="50"<?= (50 == $quantity_per_batch ? ' selected' : ''); ?>>50</option>
-                <option value="100"<?= (100 == $quantity_per_batch ? ' selected' : ''); ?>>100</option>
             </select>
 
             <label for="time_between_batches">Time between batches</label>
             <select name="time_between_batches" id="time_between_batches">
                 <option value="1"<?= (1 == $time_between_batches ? ' selected' : ''); ?>>1s</option>
-                <option value="2"<?= (2 == $time_between_batches ? ' selected' : ''); ?>>2s</option>
                 <option value="5"<?= (5 == $time_between_batches ? ' selected' : ''); ?>>5s</option>
                 <option value="10"<?= (10 == $time_between_batches ? ' selected' : ''); ?>>10s</option>
                 <option value="30"<?= (30 == $time_between_batches ? ' selected' : ''); ?>>30s</option>

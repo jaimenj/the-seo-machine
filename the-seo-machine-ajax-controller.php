@@ -88,6 +88,8 @@ class TheSeoMachineAjaxController
         $num_urls_in_queue_not_visited = $wpdb->get_var(
             'SELECT count(*) FROM '.$wpdb->prefix.'the_seo_machine_queue '
             .'WHERE visited <> true;');
+        $num_urls = $wpdb->get_var(
+            'SELECT count(*) FROM '.$wpdb->prefix.'the_seo_machine_url_entity;');
 
         // If starting study..
         if (0 == $num_urls_in_queue) {
@@ -118,6 +120,9 @@ class TheSeoMachineAjaxController
         } else {
             $status = 'finished';
         }
+        $status .= ' '.$num_urls_in_queue.' URLs in queue, '
+            .$num_urls_in_queue_not_visited.' not visited, '
+            .$num_urls.' URLs studied..';
 
         // Return data..
         echo $status;
