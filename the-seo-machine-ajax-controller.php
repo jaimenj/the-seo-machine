@@ -91,21 +91,28 @@ class TheSeoMachineAjaxController
 
         // If starting study..
         if (0 == $num_urls_in_queue) {
-            TheSeoMachineCore::get_instance()->study(get_site_url());
+            TheSeoMachineDatabase::get_instance()->save_url_in_queue(
+                get_site_url(),
+                0,
+                'ENTRY_POINT'
+            );
+
             $status = 'processing';
         } elseif ($num_urls_in_queue_not_visited > 0) {
             $next_queue_urls = $wpdb->get_results(
-                'SELECT url FROM '.$wpdb->prefix.'the_seo_machine_queue '
+                'SELECT * FROM '.$wpdb->prefix.'the_seo_machine_queue '
                 .'WHERE visited <> true '
                 .'ORDER BY id ASC '
-                .'LIMIT '.$quantity_per_batch.';');
+                .'LIMIT '.$quantity_per_batch.';'
+            );
 
             foreach ($next_queue_urls as $next_queue_url) {
                 TheSeoMachineCore::get_instance()->study($next_queue_url);
 
                 $wpdb->get_results(
                     'UPDATE '.$wpdb->prefix.'the_seo_machine_queue '
-                    .'SET visited = true WHERE id = '.$next_queue_url->id);
+                    .'SET visited = true WHERE id = '.$next_queue_url->id
+                );
             }
             $status = 'processing';
         } else {

@@ -6,6 +6,7 @@ class TheSeoMachineCore
 {
     private static $instance;
     private $dom;
+    private $response_html;
 
     public static function get_instance()
     {
@@ -29,7 +30,7 @@ class TheSeoMachineCore
         $curl = curl_init();
         curl_setopt($curl, CURLOPT_URL, $current_url->url);
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-        $html = curl_exec($curl);
+        $this->response_html = curl_exec($curl);
         $http_code = curl_getinfo($curl, CURLINFO_HTTP_CODE);
 
         // Check if it is a redirection..
@@ -62,7 +63,7 @@ class TheSeoMachineCore
     private function _prepare_url_insights_data($curl, &$data)
     {
         $dom = $this->dom;
-        @$dom->loadHTML($curl->response);
+        @$dom->loadHTML($this->response_html);
 
         $data['title'] = '';
         $data['meta_charset'] = '';

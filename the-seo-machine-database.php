@@ -182,6 +182,7 @@ class TheSeoMachineDatabase
 
     public function save_url($data)
     {
+        var_dump($data);
         global $wpdb;
 
         $results = $wpdb->get_results(
@@ -189,8 +190,7 @@ class TheSeoMachineDatabase
             ."WHERE url LIKE '".$data['url']."';"
         );
 
-        
-        if(empty($results)) {
+        if (empty($results)) {
             // New URL..
             $wpdb->get_results(
                 'INSERT INTO '.$wpdb->prefix.'the_seo_machine_url_entity (url) '
@@ -200,8 +200,6 @@ class TheSeoMachineDatabase
                 'SELECT id FROM '.$wpdb->prefix.'the_seo_machine_url_entity '
                 ."WHERE url LIKE '".$data['url']."';"
             );
-            
-
         } else {
             // If updating an existing URL, remove the old values..
             $id_url = $results->id;
@@ -222,11 +220,13 @@ class TheSeoMachineDatabase
 
         // Finally insert the new data values..
         foreach ($data as $key => $value) {
-            $wpdb->get_results(
-                'INSERT INTO '.$wpdb->prefix.'the_seo_machine_url_'
-                .TheSeoMachineDatabase::get_instance()->_get_eav_attributes()[$key].' (id_url, code, value) '
-                ."VALUES ('".$id_url."', '".$key."', '".$value."');"
-            );
+            if ('url' != $key) {
+                $wpdb->get_results(
+                    'INSERT INTO '.$wpdb->prefix.'the_seo_machine_url_'
+                    .TheSeoMachineDatabase::get_instance()->_get_eav_attributes()[$key].' (id_url, code, value) '
+                    ."VALUES ('".$id_url."', '".$key."', '".$value."');"
+                );
+            }
         }
     }
 }
