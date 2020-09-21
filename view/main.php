@@ -66,28 +66,12 @@ echo $_SERVER['REQUEST_URI'];
             width="100%">
                 <thead>
                     <tr>
-                        <th>Column 0</th>
-                        <th>Column 1</th>
-                        <th>Column 2</th>
-                        <th>Column 3</th>
-                        <th>Column 4</th>
-                        <th>Column 5</th>
-                        <th>Column 6</th>
-                        <th>Column 7</th>
-                        <th>Column 8</th>
-                        <th>Column 9</th>
+                        <th>ID</th>
+                        <th>URL</th>
                     </tr>
                 </thead>
                 <tfoot>
                     <tr>
-                        <th>Filter..</th>
-                        <th>Filter..</th>
-                        <th>Filter..</th>
-                        <th>Filter..</th>
-                        <th>Filter..</th>
-                        <th>Filter..</th>
-                        <th>Filter..</th>
-                        <th>Filter..</th>
                         <th>Filter..</th>
                         <th>Filter..</th>
                     </tr>

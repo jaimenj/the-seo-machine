@@ -32,10 +32,24 @@ class TheSeoMachineAjaxController
         // Request data to the DB..
         global $wpdb;
 
-        $sql = 'SELECT ..';
+        $sql = 'SELECT * FROM '.$wpdb->prefix.'the_seo_machine_url_entity ';
         $results = $wpdb->get_results($sql);
 
         // Return data..
+        $data = [];
+        foreach ($results as $key => $value) {
+            $data[] = [
+                $value->id, 
+                $value->url
+            ];
+        }
+        header('Content-type: application/json');
+        echo json_encode([
+            'draw' => $_GET['draw'],
+            'recordsTotal' => 211,
+            'recordsFiltered' => 211,
+            'data' => $data
+        ]);
 
         wp_die();
     }
