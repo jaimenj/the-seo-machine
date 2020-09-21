@@ -56,34 +56,44 @@ echo $_SERVER['REQUEST_URI'];
             </select>
         </p>
 
-        <table class="wp-list-table widefat fixed striped posts">
-            <thead>
-                <tr>
-                    <td>Col</td>
-                    <td>Col</td>
-                    <td>Col</td>
-                    <td>Col</td>
-                    <td>Col</td>
-                </tr>
-            </thead>
-            <tbody>
-            <?php
-            foreach ($results as $key => $result) {
-                ?>
-
-                <tr>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                </tr>
-
-            <?php
-            }
-            ?>
-            </tbody>
-        </table>
+        <div class="table-responsive" id="tsm-datatable-container">
+            <table 
+            class="records_list table table-striped table-bordered table-hover" 
+            id="tsm-datatable" 
+            data-ajax_datatables_server_processing_url="<?php 
+                echo get_site_url().'/wp-admin/admin-ajax.php?action=tsm_urls';
+            ?>"
+            width="100%">
+                <thead>
+                    <tr>
+                        <th>Column 0</th>
+                        <th>Column 1</th>
+                        <th>Column 2</th>
+                        <th>Column 3</th>
+                        <th>Column 4</th>
+                        <th>Column 5</th>
+                        <th>Column 6</th>
+                        <th>Column 7</th>
+                        <th>Column 8</th>
+                        <th>Column 9</th>
+                    </tr>
+                </thead>
+                <tfoot>
+                    <tr>
+                        <th>Filter..</th>
+                        <th>Filter..</th>
+                        <th>Filter..</th>
+                        <th>Filter..</th>
+                        <th>Filter..</th>
+                        <th>Filter..</th>
+                        <th>Filter..</th>
+                        <th>Filter..</th>
+                        <th>Filter..</th>
+                        <th>Filter..</th>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
 
         <div class="tsm-footer-actions-container">
             <div class="tsm-footer-actions-container-left">
