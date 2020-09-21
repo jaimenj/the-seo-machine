@@ -87,7 +87,7 @@ echo $_SERVER['REQUEST_URI'];
 
         <div class="tsm-footer-actions-container">
             <div class="tsm-footer-actions-container-left">
-                <button type="button" name="tsm-btn-study-site" id="tsm-btn-study-site" class="button button-green button-study-site">Study Site</button>
+                <button type="button" name="tsm-btn-study-site" id="tsm-btn-study-site" class="button button-study-site">Study Site</button>
                 <span id="tsm-box-study-site-status">Standby</span>
             </div>
             <div class="tsm-footer-actions-container-right">

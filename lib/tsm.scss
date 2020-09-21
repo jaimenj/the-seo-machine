@@ -29,3 +29,21 @@
 .tsm-btn-submit {
     margin-right: 5px !important;
 }
+
+.tsm-button-studying {
+    animation: blink 2s infinite;
+}
+
+@keyframes blink {
+    0% {
+        background-color: green;
+    }
+
+    50% {
+        background-color: white;
+    }
+
+    100% {
+        background-color: green;
+    }
+}
