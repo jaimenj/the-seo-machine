@@ -36,6 +36,7 @@ class TheSeoMachine
         register_deactivation_hook(__FILE__, [$this, 'deactivation']);
 
         add_action('admin_enqueue_scripts', [$this, 'enqueue_admin_css_js']);
+        add_action('in_admin_header', [$this, 'add_admin_header_libraries']);
 
         TheSeoMachineDatabase::get_instance();
         TheSeoMachineCore::get_instance();
@@ -73,12 +74,18 @@ class TheSeoMachine
     /**
      * It adds assets only for the backend..
      */
-    public function enqueue_admin_css_js($hook)
+    public function enqueue_admin_css_js()
     {
         wp_enqueue_style('tsm_custom_style', plugin_dir_url(__FILE__).'lib/tsm.min.css', false, '0.1');
-        wp_enqueue_style('tsm_datatables_style', plugin_dir_url(__FILE__).'lib/datatables.min.css', false, '0.1');
         wp_enqueue_script('tsm_custom_script', plugin_dir_url(__FILE__).'lib/tsm.min.js', [], '0.1');
-        wp_enqueue_script('tsm_datatables_script', plugin_dir_url(__FILE__).'lib/datatables.min.js', [], '0.1');
+    }
+
+    public function add_admin_header_libraries()
+    {
+        echo '<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/jszip-2.5.0/dt-1.10.22/b-1.6.4/b-colvis-1.6.4/b-flash-1.6.4/b-html5-1.6.4/b-print-1.6.4/cr-1.5.2/fc-3.3.1/r-2.2.6/datatables.min.css"/>';
+        echo '<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/pdfmake.min.js"></script>';
+        echo '<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script>';
+        echo '<script type="text/javascript" src="https://cdn.datatables.net/v/dt/jszip-2.5.0/dt-1.10.22/b-1.6.4/b-colvis-1.6.4/b-flash-1.6.4/b-html5-1.6.4/b-print-1.6.4/cr-1.5.2/fc-3.3.1/r-2.2.6/datatables.min.js"></script>';
     }
 }
 
