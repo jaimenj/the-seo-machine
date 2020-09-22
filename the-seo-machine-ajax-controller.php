@@ -33,30 +33,48 @@ class TheSeoMachineAjaxController
         global $wpdb;
 
         // Main query..
-        $sql = 'SELECT * FROM '.$wpdb->prefix.'the_seo_machine_url_entity ';
+        $sql = "SELECT ue.id id, 
+        ue.url url, 
+        ulevel.value level,
+        utitle.value as title,
+        ucurlinfo_response_code.value curlinfo_response_code
+        FROM wpjnj_the_seo_machine_url_entity ue 
+        LEFT JOIN wpjnj_the_seo_machine_url_number ulevel ON ulevel.id_url = ue.id AND ulevel.code = 'level'
+        LEFT JOIN wpjnj_the_seo_machine_url_string utitle ON utitle.id_url = ue.id AND utitle.code = 'title'
+        LEFT JOIN wpjnj_the_seo_machine_url_number ucurlinfo_response_code ON ucurlinfo_response_code.id_url = ue.id AND ucurlinfo_response_code.code = 'curlinfo_response_code'";
 
         // Where filtering..
         $where_clauses_or = [];
         $where_clauses_and = [];
+        // ..main search..
         if (!empty($_POST['search']['value'])) {
             foreach ($_POST['columns'] as $column) {
-                if ('number' == TheSeoMachineDatabase::get_instance()->get_eav_attributes()[$column['name']]) {
+                if ('id' == $column['name']) {
+                    $where_clauses_or[] = 'ue.id = '.floatval($_POST['search']['value']);
+                } elseif ('url' == $column['name']) {
+                    $where_clauses_or[] = "ue.url LIKE '%".sanitize_text_field($_POST['search']['value'])."%'";
+                } elseif ('number' == TheSeoMachineDatabase::get_instance()->get_eav_attributes()[$column['name']]) {
                     if (is_numeric($_POST['search']['value'])) {
-                        $where_clauses_or[] = sanitize_text_field($column['name']).' = '.floatval($_POST['search']['value']);
+                        $where_clauses_or[] = 'u'.sanitize_text_field($column['name']).'.value = '.floatval($_POST['search']['value']);
                     }
                 } else {
-                    $where_clauses_or[] = sanitize_text_field($column['name'])." LIKE '%".sanitize_text_field($_POST['search']['value'])."%'";
+                    $where_clauses_or[] = 'u'.sanitize_text_field($column['name']).".value LIKE '%".sanitize_text_field($_POST['search']['value'])."%'";
                 }
             }
         }
+        // ..column search..
         foreach ($_POST['columns'] as $column) {
             if (!empty($column['search']['value'])) {
-                if ('number' == TheSeoMachineDatabase::get_instance()->get_eav_attributes()[$column['name']]) {
+                if ('id' == $column['name']) {
+                    $where_clauses_and[] = 'ue.id = '.floatval($column['search']['value']);
+                } elseif ('url' == $column['name']) {
+                    $where_clauses_and[] = "ue.url LIKE '%".sanitize_text_field($column['search']['value'])."%'";
+                } elseif ('number' == TheSeoMachineDatabase::get_instance()->get_eav_attributes()[$column['name']]) {
                     if (is_numeric($column['search']['value'])) {
-                        $where_clauses_and[] = sanitize_text_field($column['name']).' = '.floatval($column['search']['value']);
+                        $where_clauses_and[] = 'u'.sanitize_text_field($column['name']).'.value = '.floatval($column['search']['value']);
                     }
                 } else {
-                    $where_clauses_and[] =sanitize_text_field( $column['name'])." LIKE '%".sanitize_text_field($column['search']['value'])."%'";
+                    $where_clauses_and[] = 'u'.sanitize_text_field($column['name']).".value LIKE '%".sanitize_text_field($column['search']['value'])."%'";
                 }
             }
         }
@@ -88,9 +106,13 @@ class TheSeoMachineAjaxController
         // Return data..
         $data = [];
         foreach ($results as $key => $value) {
+            //var_dump($value);
             $data[] = [
                 $value->id,
                 $value->url,
+                $value->level,
+                $value->title,
+                $value->curlinfo_response_code,
             ];
         }
         header('Content-type: application/json');

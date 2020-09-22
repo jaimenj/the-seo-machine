@@ -68,10 +68,16 @@ echo $_SERVER['REQUEST_URI'];
                     <tr>
                         <th>ID</th>
                         <th>URL</th>
+                        <th>Level</th>
+                        <th>Title</th>
+                        <th>Response</th>
                     </tr>
                 </thead>
                 <tfoot>
                     <tr>
+                        <th>Filter..</th>
+                        <th>Filter..</th>
+                        <th>Filter..</th>
                         <th>Filter..</th>
                         <th>Filter..</th>
                     </tr>
