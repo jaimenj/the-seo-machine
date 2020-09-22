@@ -91,14 +91,14 @@ class TheSeoMachineDatabase
 
         $sql = 'CREATE TABLE '.$wpdb->prefix.'the_seo_machine_url_entity ('
             .'id INTEGER NOT NULL AUTO_INCREMENT PRIMARY KEY,'
-            .'url VARCHAR(256) NOT NULL'
+            .'url VARCHAR(512) NOT NULL'
             .');';
         $wpdb->get_results($sql);
 
         $sql = 'CREATE TABLE '.$wpdb->prefix.'the_seo_machine_url_string ('
             .'id INTEGER NOT NULL AUTO_INCREMENT PRIMARY KEY,'
             .'id_url INTEGER NOT NULL,'
-            .'code VARCHAR(16) NOT NULL,'
+            .'code VARCHAR(64) NOT NULL,'
             .'value VARCHAR(256) NOT NULL'
             .');';
         $wpdb->get_results($sql);
@@ -106,7 +106,7 @@ class TheSeoMachineDatabase
         $sql = 'CREATE TABLE '.$wpdb->prefix.'the_seo_machine_url_text ('
             .'id INTEGER NOT NULL AUTO_INCREMENT PRIMARY KEY,'
             .'id_url INTEGER NOT NULL,'
-            .'code VARCHAR(16) NOT NULL,'
+            .'code VARCHAR(64) NOT NULL,'
             .'value TEXT NOT NULL'
             .');';
         $wpdb->get_results($sql);
@@ -114,16 +114,16 @@ class TheSeoMachineDatabase
         $sql = 'CREATE TABLE '.$wpdb->prefix.'the_seo_machine_url_number ('
             .'id INTEGER NOT NULL AUTO_INCREMENT PRIMARY KEY,'
             .'id_url INTEGER NOT NULL,'
-            .'code VARCHAR(16) NOT NULL,'
+            .'code VARCHAR(64) NOT NULL,'
             .'value FLOAT NOT NULL'
             .');';
         $wpdb->get_results($sql);
 
         $sql = 'CREATE TABLE '.$wpdb->prefix.'the_seo_machine_queue ('
             .'id INTEGER NOT NULL AUTO_INCREMENT PRIMARY KEY,'
-            .'url VARCHAR(256) NOT NULL,'
+            .'url VARCHAR(512) NOT NULL,'
             .'level INTEGER NOT NULL,'
-            .'found_in_url VARCHAR(256) NOT NULL,'
+            .'found_in_url VARCHAR(512) NOT NULL,'
             .'visited BOOLEAN DEFAULT false'
             .');';
         $wpdb->get_results($sql);
