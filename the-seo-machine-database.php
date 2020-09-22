@@ -22,9 +22,10 @@ class TheSeoMachineDatabase
         $this->update_if_needed();
     }
 
-    private function _get_eav_attributes()
+    public function get_eav_attributes()
     {
         return [
+            'id' => 'number',
             'url' => 'string',
             'updated_at' => 'string',
             'level' => 'number',
@@ -222,7 +223,7 @@ class TheSeoMachineDatabase
             if ('url' != $key) {
                 $wpdb->get_results(
                     'INSERT INTO '.$wpdb->prefix.'the_seo_machine_url_'
-                    .TheSeoMachineDatabase::get_instance()->_get_eav_attributes()[$key].' (id_url, code, value) '
+                    .$this->get_eav_attributes()[$key].' (id_url, code, value) '
                     ."VALUES ('".$id_url."', '".$key."', '".$value."');"
                 );
             }

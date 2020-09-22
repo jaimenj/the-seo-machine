@@ -32,23 +32,75 @@ class TheSeoMachineAjaxController
         // Request data to the DB..
         global $wpdb;
 
+        // Main query..
         $sql = 'SELECT * FROM '.$wpdb->prefix.'the_seo_machine_url_entity ';
+
+        // Where filtering..
+        $where_clauses_or = [];
+        $where_clauses_and = [];
+        if (!empty($_POST['search']['value'])) {
+            foreach ($_POST['columns'] as $column) {
+                if ('number' == TheSeoMachineDatabase::get_instance()->get_eav_attributes()[$column['name']]) {
+                    if (is_numeric($_POST['search']['value'])) {
+                        $where_clauses_or[] = sanitize_text_field($column['name']).' = '.floatval($_POST['search']['value']);
+                    }
+                } else {
+                    $where_clauses_or[] = sanitize_text_field($column['name'])." LIKE '%".sanitize_text_field($_POST['search']['value'])."%'";
+                }
+            }
+        }
+        foreach ($_POST['columns'] as $column) {
+            if (!empty($column['search']['value'])) {
+                if ('number' == TheSeoMachineDatabase::get_instance()->get_eav_attributes()[$column['name']]) {
+                    if (is_numeric($column['search']['value'])) {
+                        $where_clauses_and[] = sanitize_text_field($column['name']).' = '.floatval($column['search']['value']);
+                    }
+                } else {
+                    $where_clauses_and[] =sanitize_text_field( $column['name'])." LIKE '%".sanitize_text_field($column['search']['value'])."%'";
+                }
+            }
+        }
+
+        // Main results..
+        $where_filtered = implode(' AND ', $where_clauses_and);
+        if (empty($where_filtered)) {
+            if (!empty($where_clauses_or)) {
+                $where_filtered = implode(' OR ', $where_clauses_or);
+            }
+        } else {
+            if (!empty($where_clauses_or)) {
+                $where_filtered .= ' AND ('.implode(' OR ', $where_clauses_or).')';
+            }
+        }
+        if (!empty($where_filtered)) {
+            $sql .= 'WHERE '.$where_filtered;
+        }
+        $sql .= ' LIMIT '.intval($_POST['length']).' OFFSET '.intval($_POST['start']);
         $results = $wpdb->get_results($sql);
+
+        // Totals..
+        $sql_total = 'SELECT count(*) FROM '.$wpdb->prefix.'the_seo_machine_url_entity ';
+        $records_total = $wpdb->get_var($sql_total);
+        $records_total_filtered = $wpdb->get_var(
+            $sql_total.(!empty($where_filtered) ? ' WHERE '.$where_filtered : '')
+        );
 
         // Return data..
         $data = [];
         foreach ($results as $key => $value) {
             $data[] = [
-                $value->id, 
-                $value->url
+                $value->id,
+                $value->url,
             ];
         }
         header('Content-type: application/json');
         echo json_encode([
-            'draw' => $_GET['draw'],
-            'recordsTotal' => 211,
-            'recordsFiltered' => 211,
-            'data' => $data
+            'draw' => intval($_POST['draw']),
+            'recordsTotal' => $records_total,
+            'recordsFiltered' => $records_total_filtered,
+            'data' => $data,
+            'sql' => $sql,
+            'whereFiltered' => $where_filtered,
         ]);
 
         wp_die();
