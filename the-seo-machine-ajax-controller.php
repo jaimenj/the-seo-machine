@@ -34,6 +34,7 @@ class TheSeoMachineAjaxController
 
         // Main query..
         $sql = 'SELECT ue.id id, ue.url url,';
+        $sql_filtered = 'SELECT count(*) ';
         $eav_attributes = TheSeoMachineDatabase::get_instance()->get_eav_attributes();
         foreach ($eav_attributes as $key => $value) {
             if ('id' != $key and 'url' != $key) {
@@ -43,12 +44,14 @@ class TheSeoMachineAjaxController
                 }
             }
         }
-        $sql .= ' FROM wpjnj_the_seo_machine_url_entity ue ';
+        $from_sentence .= ' FROM wpjnj_the_seo_machine_url_entity ue ';
         foreach ($eav_attributes as $key => $value) {
             if ('id' != $key and 'url' != $key) {
-                $sql .= 'LEFT JOIN wpjnj_the_seo_machine_url_'.$value.' u'.$key.' ON u'.$key.'.id_url = ue.id AND u'.$key.".code = '".$key."' ";
+                $from_sentence .= 'LEFT JOIN wpjnj_the_seo_machine_url_'.$value.' u'.$key.' ON u'.$key.'.id_url = ue.id AND u'.$key.".code = '".$key."' ";
             }
         }
+        $sql .= $from_sentence;
+        $sql_filtered .= $from_sentence;
 
         // Where filtering..
         $where_clauses_or = [];
@@ -107,6 +110,7 @@ class TheSeoMachineAjaxController
         }
         if (!empty($where_filtered)) {
             $sql .= 'WHERE '.$where_filtered;
+            $sql_filtered .= 'WHERE '.$where_filtered;
         }
         if (!empty($order_by_clauses)) {
             $sql .= 'ORDER BY '.implode(', ', $order_by_clauses);
@@ -115,11 +119,9 @@ class TheSeoMachineAjaxController
         $results = $wpdb->get_results($sql);
 
         // Totals..
-        $sql_total = 'SELECT count(*) FROM '.$wpdb->prefix.'the_seo_machine_url_entity ';
+        $sql_total = 'SELECT count(*) FROM '.$wpdb->prefix.'the_seo_machine_url_entity ue ';
         $records_total = $wpdb->get_var($sql_total);
-        $records_total_filtered = $wpdb->get_var(
-            $sql_total.(!empty($where_filtered) ? ' WHERE '.$where_filtered : '')
-        );
+        $records_total_filtered = $wpdb->get_var($sql_filtered);
 
         // Return data..
         $data = [];
@@ -138,7 +140,7 @@ class TheSeoMachineAjaxController
             'recordsFiltered' => $records_total_filtered,
             'data' => $data,
             'sql' => $sql,
-            'whereFiltered' => $where_filtered,
+            'sqlFiltered' => $sql_filtered,
         ]);
 
         wp_die();
