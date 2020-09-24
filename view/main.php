@@ -5,6 +5,8 @@ if (!current_user_can('administrator')) {
     wp_die(__('Sorry, you are not allowed to manage options for this site.'));
 }
 
+$current_columns_to_show_array = explode(',', $current_columns_to_show);
+
 ?>
 
 <style>hr{margin-top: 30px;}</style>
@@ -68,124 +70,24 @@ echo $_SERVER['REQUEST_URI'];
             width="100%">
                 <thead>
                     <tr>
-                        <th>ID</th>
-                        <th>URL</th>
-                        <th>updated_at</th>
-                        <th>Level</th>
-                        <th>Title</th>
-                        <th>Response</th>
-                        <th>meta_charset</th>
-                        <th>meta_description</th>
-                        <th>meta_keywords</th>
-                        <th>meta_author</th>
-                        <th>meta_viewport</th>
-                        <th>qty_bases</th>
-                        <th>qty_css_external_files</th>
-                        <th>qty_css_internal_files</th>
-                        <th>qty_javascripts</th>
-                        <th>qty_h1s</th>
-                        <th>qty_h2s</th>
-                        <th>qty_h3s</th>
-                        <th>qty_h4s</th>
-                        <th>qty_h5s</th>
-                        <th>qty_h6s</th>
-                        <th>qty_hgroups</th>
-                        <th>qty_sections</th>
-                        <th>qty_navs</th>
-                        <th>qty_asides</th>
-                        <th>qty_articles</th>
-                        <th>qty_addresses</th>
-                        <th>qty_headers</th>
-                        <th>qty_footers</th>
-                        <th>qty_ps</th>
-                        <th>qty_total_links</th>
-                        <th>qty_internal_links</th>
-                        <th>qty_external_links</th>
-                        <th>qty_targeted_links</th>
-                        <th>content_study</th>
-                        <th>text_to_html_ratio</th>
-                        <th>curlinfo_efective_url</th>
-                        <th>curlinfo_http_code</th>
-                        <th>curlinfo_filetime</th>
-                        <th>curlinfo_total_time</th>
-                        <th>curlinfo_namelookup_time</th>
-                        <th>curlinfo_connect_time</th>
-                        <th>curlinfo_pretransfer_time</th>
-                        <th>curlinfo_starttransfer_time</th>
-                        <th>curlinfo_redirect_count</th>
-                        <th>curlinfo_redirect_time</th>
-                        <th>curlinfo_redirect_url</th>
-                        <th>curlinfo_primary_ip</th>
-                        <th>curlinfo_primary_port</th>
-                        <th>curlinfo_size_download</th>
-                        <th>curlinfo_speed_download</th>
-                        <th>curlinfo_request_size</th>
-                        <th>curlinfo_content_length_download</th>
-                        <th>curlinfo_content_type</th>
-                        <th>curlinfo_http_connectcode</th>
-                        <th>curlinfo_num_connects</th>
-                        <th>curlinfo_appconnect_time</th>
+                        <?php
+                        $cont_cols = 0;
+                        foreach (TheSeoMachineDatabase::get_instance()->get_eav_attributes() as $key => $value) {
+                            if(in_array($key, $current_columns_to_show_array)) {
+                                echo '<th>'.strtoupper($key).'</th>';
+                                $cont_cols++;
+                            }
+                        }
+                        ?>
                     </tr>
                 </thead>
                 <tfoot>
                     <tr>
-                        <th>Filter..</th>
-                        <th>Filter..</th>
-                        <th>Filter..</th>
-                        <th>Filter..</th>
-                        <th>Filter..</th>
-                        <th>Filter..</th>
-                        <th>Filter..</th>
-                        <th>Filter..</th>
-                        <th>Filter..</th>
-                        <th>Filter..</th>
-                        <th>Filter..</th>
-                        <th>Filter..</th>
-                        <th>Filter..</th>
-                        <th>Filter..</th>
-                        <th>Filter..</th>
-                        <th>Filter..</th>
-                        <th>Filter..</th>
-                        <th>Filter..</th>
-                        <th>Filter..</th>
-                        <th>Filter..</th>
-                        <th>Filter..</th>
-                        <th>Filter..</th>
-                        <th>Filter..</th>
-                        <th>Filter..</th>
-                        <th>Filter..</th>
-                        <th>Filter..</th>
-                        <th>Filter..</th>
-                        <th>Filter..</th>
-                        <th>Filter..</th>
-                        <th>Filter..</th>
-                        <th>Filter..</th>
-                        <th>Filter..</th>
-                        <th>Filter..</th>
-                        <th>Filter..</th>
-                        <th>Filter..</th>
-                        <th>Filter..</th>
-                        <th>Filter..</th>
-                        <th>Filter..</th>
-                        <th>Filter..</th>
-                        <th>Filter..</th>
-                        <th>Filter..</th>
-                        <th>Filter..</th>
-                        <th>Filter..</th>
-                        <th>Filter..</th>
-                        <th>Filter..</th>
-                        <th>Filter..</th>
-                        <th>Filter..</th>
-                        <th>Filter..</th>
-                        <th>Filter..</th>
-                        <th>Filter..</th>
-                        <th>Filter..</th>
-                        <th>Filter..</th>
-                        <th>Filter..</th>
-                        <th>Filter..</th>
-                        <th>Filter..</th>
-                        <th>Filter..</th>
-                        <th>Filter..</th>
+                        <?php
+                        for ($i=0; $i < $cont_cols; $i++) { 
+                            echo '<th>Filter..</th>';
+                        }
+                        ?>
                     </tr>
                 </tfoot>
             </table>
@@ -210,7 +112,6 @@ echo $_SERVER['REQUEST_URI'];
         <h2>Current columns to show</h2>
         <div class="tsm-columns-container">
             <?php
-            $current_columns_to_show = explode(',', $current_columns_to_show);
 
             foreach (TheSeoMachineDatabase::get_instance()->get_eav_attributes() as $key => $value) {
                 ?>
@@ -219,14 +120,16 @@ echo $_SERVER['REQUEST_URI'];
                 type="checkbox" 
                 name="checkbox_current_columns_to_show_<?= $key; ?>" 
                 id="checkbox_current_columns_to_show_<?= $key; ?>"
-                <?= (in_array($key, $current_columns_to_show) ? 'checked' : ''); ?>>
+                <?= (in_array($key, $current_columns_to_show_array) ? 'checked' : ''); ?>>
                 <?= strtoupper($key); ?>
                 </label>
                 <?php
             }
+
             ?>
         </div>
         <div style="clear:both;"></div>
+        <input type="hidden" name="tsm-current-columns-to-show" id="tsm-current-columns-to-show" value="<?= $current_columns_to_show ?>">
         <input type="submit" name="tsm-submit-save-current-columns" id="tsm-submit-save-current-columns" class="button button-green tsm-btn-submit" value="Save current columns to show">
     </div>
     
