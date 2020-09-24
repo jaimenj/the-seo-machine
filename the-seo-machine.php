@@ -79,8 +79,8 @@ class TheSeoMachine
      */
     public function enqueue_admin_css_js()
     {
-        wp_enqueue_style('tsm_custom_style', plugin_dir_url(__FILE__).'lib/tsm.min.css', false, '0.1');
-        wp_enqueue_script('tsm_custom_script', plugin_dir_url(__FILE__).'lib/tsm.min.js', [], '0.1');
+        wp_enqueue_style('tsm_custom_style', plugin_dir_url(__FILE__).'lib/tsm.min.css', false, '0.1.1');
+        wp_enqueue_script('tsm_custom_script', plugin_dir_url(__FILE__).'lib/tsm.min.js', [], '0.1.1');
     }
 
     public function add_admin_header_libraries()

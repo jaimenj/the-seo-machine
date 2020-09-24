@@ -110,6 +110,7 @@ echo $_SERVER['REQUEST_URI'];
 
     <div class="tsm-current-columns-to-show-container">
         <h2>Current columns to show</h2>
+        <p>Be careful with this, if you add too many columns you can crash the server when looking for information in the database.</p>
         <div class="tsm-columns-container">
             <?php
 
