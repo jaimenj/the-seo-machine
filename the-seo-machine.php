@@ -49,10 +49,12 @@ class TheSeoMachine
         register_setting('tsm_options_group', 'tsm_db_version');
         register_setting('tsm_options_group', 'tsm_quantity_per_batch');
         register_setting('tsm_options_group', 'tsm_time_between_batches');
+        register_setting('tsm_options_group', 'tsm_current_columns_to_show');
 
         add_option('tsm_db_version', 0);
         add_option('tsm_quantity_per_batch', '2');
         add_option('tsm_time_between_batches', '30');
+        add_option('tsm_current_columns_to_show', 'id,url,updated_at,level,title,curlinfo_response_code');
 
         TheSeoMachineDatabase::get_instance()->create_initial_tables();
     }
@@ -69,6 +71,7 @@ class TheSeoMachine
         delete_option('tsm_db_version');
         delete_option('tsm_quantity_per_batch');
         delete_option('tsm_time_between_batches');
+        delete_option('tsm_current_columns_to_show');
     }
 
     /**

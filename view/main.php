@@ -9,7 +9,7 @@ if (!current_user_can('administrator')) {
 
 <form method="post" enctype="multipart/form-data" action="<?php
 echo $_SERVER['REQUEST_URI'];
-?>" id="this_form" name="this_form">
+?>" id="tsm_form" name="tsm_form">
 
     <div class="wrap">
         <span style="float: right">
