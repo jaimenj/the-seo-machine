@@ -33,15 +33,24 @@ class TheSeoMachineAjaxController
         global $wpdb;
 
         // Main query..
-        $sql = 'SELECT ue.id id, ue.url url,';
+        $sql = 'SELECT '; //ue.id id, ue.url url,';
         $sql_filtered = 'SELECT count(*) ';
         $eav_attributes = TheSeoMachineDatabase::get_instance()->get_eav_attributes();
+        $current_columns_to_show = get_option('tsm_current_columns_to_show');
+        $current_columns_to_show = explode(',', $current_columns_to_show);
+        foreach ($eav_attributes as $key => $value) {
+            if(!in_array($key, $current_columns_to_show)){
+                unset($eav_attributes[$key]);
+            }
+        }
         foreach ($eav_attributes as $key => $value) {
             if ('id' != $key and 'url' != $key) {
                 $sql .= 'u'.$key.'.value '.$key;
-                if ($key != array_key_last($eav_attributes)) {
-                    $sql .= ', ';
-                }
+            } else{
+                $sql .= 'ue.'.$key.' '.$key;
+            }
+            if ($key != array_key_last($eav_attributes)) {
+                $sql .= ', ';
             }
         }
         $from_sentence .= ' FROM wpjnj_the_seo_machine_url_entity ue ';
