@@ -33,15 +33,22 @@ class TheSeoMachineAjaxController
         global $wpdb;
 
         // Main query..
-        $sql = "SELECT ue.id id, 
-        ue.url url, 
-        ulevel.value level,
-        utitle.value as title,
-        ucurlinfo_response_code.value curlinfo_response_code
-        FROM wpjnj_the_seo_machine_url_entity ue 
-        LEFT JOIN wpjnj_the_seo_machine_url_number ulevel ON ulevel.id_url = ue.id AND ulevel.code = 'level'
-        LEFT JOIN wpjnj_the_seo_machine_url_string utitle ON utitle.id_url = ue.id AND utitle.code = 'title'
-        LEFT JOIN wpjnj_the_seo_machine_url_number ucurlinfo_response_code ON ucurlinfo_response_code.id_url = ue.id AND ucurlinfo_response_code.code = 'curlinfo_response_code'";
+        $sql = 'SELECT ue.id id, ue.url url,';
+        $eav_attributes = TheSeoMachineDatabase::get_instance()->get_eav_attributes();
+        foreach ($eav_attributes as $key => $value) {
+            if ('id' != $key and 'url' != $key) {
+                $sql .= 'u'.$key.'.value '.$key;
+                if ($key != array_key_last($eav_attributes)) {
+                    $sql .= ', ';
+                }
+            }
+        }
+        $sql .= ' FROM wpjnj_the_seo_machine_url_entity ue ';
+        foreach ($eav_attributes as $key => $value) {
+            if ('id' != $key and 'url' != $key) {
+                $sql .= 'LEFT JOIN wpjnj_the_seo_machine_url_'.$value.' u'.$key.' ON u'.$key.'.id_url = ue.id AND u'.$key.".code = '".$key."' ";
+            }
+        }
 
         // Where filtering..
         $where_clauses_or = [];
@@ -79,6 +86,14 @@ class TheSeoMachineAjaxController
             }
         }
 
+        // Ordering data..
+        $order_by_clauses = [];
+        if (!empty($_POST['order'])) {
+            foreach ($_POST['order'] as $order) {
+                $order_by_clauses[] = $_POST['columns'][$order['column']]['name'].' '.$order['dir'];
+            }
+        }
+
         // Main results..
         $where_filtered = implode(' AND ', $where_clauses_and);
         if (empty($where_filtered)) {
@@ -93,6 +108,9 @@ class TheSeoMachineAjaxController
         if (!empty($where_filtered)) {
             $sql .= 'WHERE '.$where_filtered;
         }
+        if (!empty($order_by_clauses)) {
+            $sql .= 'ORDER BY '.implode(', ', $order_by_clauses);
+        }
         $sql .= ' LIMIT '.intval($_POST['length']).' OFFSET '.intval($_POST['start']);
         $results = $wpdb->get_results($sql);
 
@@ -106,14 +124,12 @@ class TheSeoMachineAjaxController
         // Return data..
         $data = [];
         foreach ($results as $key => $value) {
-            //var_dump($value);
-            $data[] = [
-                $value->id,
-                $value->url,
-                $value->level,
-                $value->title,
-                $value->curlinfo_response_code,
-            ];
+            //var_dump($key); var_dump($value);
+            $tempItem = [];
+            foreach ($value as $valueKey => $valueValue) {
+                $tempItem[] = $valueValue;
+            }
+            $data[] = $tempItem;
         }
         header('Content-type: application/json');
         echo json_encode([
