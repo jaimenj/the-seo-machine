@@ -88,3 +88,40 @@
         }
     }
 }
+
+.tsm-current-columns-to-show-container {
+    .tsm-columns-container {
+        @media only screen and (min-width: 1280px) {
+            label {
+                float: left;
+                width: 25%;
+            }
+        }
+
+        @media only screen and (min-width: 980px) and (max-width: 1280px) {
+            label {
+                float: left;
+                width: 33%;
+            }
+        }
+
+        @media only screen and (min-width: 768px) and (max-width: 980px) {
+            label {
+                float: left;
+                width: 50%;
+            }
+        }
+
+        @media only screen and (max-width: 768px) {
+            label {
+                float: left;
+                width: 100%;
+                padding-bottom: 10px;
+            }
+        }
+    }
+}
+
+#tsm-submit-save-current-columns {
+    margin-top: 20px;
+}

@@ -7,6 +7,8 @@ if (!current_user_can('administrator')) {
 
 ?>
 
+<style>hr{margin-top: 30px;}</style>
+
 <form method="post" enctype="multipart/form-data" action="<?php
 echo $_SERVER['REQUEST_URI'];
 ?>" id="tsm_form" name="tsm_form">
@@ -60,7 +62,7 @@ echo $_SERVER['REQUEST_URI'];
             <table 
             class="records_list table table-striped table-bordered table-hover" 
             id="tsm-datatable" 
-            data-ajax_datatables_server_processing_url="<?php 
+            data-ajax_datatables_server_processing_url="<?php
                 echo get_site_url().'/wp-admin/admin-ajax.php?action=tsm_urls';
             ?>"
             width="100%">
@@ -202,8 +204,35 @@ echo $_SERVER['REQUEST_URI'];
         <p>* If you are studying the site and close the window, the study will stop.</p>
     </div>
 
+    <hr>
+
+    <div class="tsm-current-columns-to-show-container">
+        <h2>Current columns to show</h2>
+        <div class="tsm-columns-container">
+            <?php
+            $current_columns_to_show = explode(',', $current_columns_to_show);
+
+            foreach (TheSeoMachineDatabase::get_instance()->get_eav_attributes() as $key => $value) {
+                ?>
+                <label for="checkbox_current_columns_to_show_<?= $key; ?>">
+                <input 
+                type="checkbox" 
+                name="checkbox_current_columns_to_show_<?= $key; ?>" 
+                id="checkbox_current_columns_to_show_<?= $key; ?>"
+                <?= (in_array($key, $current_columns_to_show) ? 'checked' : ''); ?>>
+                <?= strtoupper($key); ?>
+                </label>
+                <?php
+            }
+            ?>
+        </div>
+        <div style="clear:both;"></div>
+        <input type="submit" name="tsm-submit-save-current-columns" id="tsm-submit-save-current-columns" class="button button-green tsm-btn-submit" value="Save current columns to show">
+    </div>
+    
+    
 </form>
-<style>hr{margin-top: 30px;}</style>
+
 <hr>
 <script>
     let weAreInTheSeoMachine = true

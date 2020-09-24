@@ -67,6 +67,8 @@ class TheSeoMachineBackendController
                     $tsmSms = $this->_reset_queue();
                 } elseif(isset($_REQUEST['tsm-submit-remove-all'])) {
                     $tsmSms = $this->_remove_all_data();
+                } elseif(isset($_REQUEST['tsm-submit-save-current-columns'])){
+                    $tsmSms = $this->_save_current_columns_to_show();
                 } else {
                     $tsmSms = '<div id="message" class="notice notice-success is-dismissible"><p>Cannot understand submitting!</p></div>';
                 }
@@ -76,6 +78,7 @@ class TheSeoMachineBackendController
         // Main options..
         $quantity_per_batch = get_option('tsm_quantity_per_batch');
         $time_between_batches = get_option('tsm_time_between_batches');
+        $current_columns_to_show = get_option('tsm_current_columns_to_show');
 
         include tsm_PATH.'view/main.php';
     }
@@ -106,5 +109,19 @@ class TheSeoMachineBackendController
         $wpdb->get_results('TRUNCATE '.$wpdb->prefix.'the_seo_machine_url_number;');
 
         return '<div id="message" class="notice notice-success is-dismissible"><p>Queue and URLs data truncated!</p></div>';
+    }
+
+    private function _save_current_columns_to_show() {
+        $current_columns_to_show = [];
+        
+        foreach (TheSeoMachineDatabase::get_instance()->get_eav_attributes() as $key => $value) {
+            if($_REQUEST['checkbox_current_columns_to_show_'.$key] == 'on') {
+                $current_columns_to_show[] = $key;
+            }
+        }
+
+        update_option('tsm_current_columns_to_show', implode(',', $current_columns_to_show));
+
+        return '<div id="message" class="notice notice-success is-dismissible"><p>Current columns to show updated!</p></div>';
     }
 }
