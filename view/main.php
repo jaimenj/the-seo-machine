@@ -133,11 +133,10 @@ echo $_SERVER['REQUEST_URI'];
         <input type="hidden" name="tsm-current-columns-to-show" id="tsm-current-columns-to-show" value="<?= $current_columns_to_show ?>">
         <input type="submit" name="tsm-submit-save-current-columns" id="tsm-submit-save-current-columns" class="button button-green tsm-btn-submit" value="Save current columns to show">
     </div>
-    
-    
 </form>
 
 <hr>
+<p>Current DB version: <?= $tsm_db_version ?></p>
 <script>
     let weAreInTheSeoMachine = true
 </script>

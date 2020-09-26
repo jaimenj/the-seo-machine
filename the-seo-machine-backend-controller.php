@@ -79,6 +79,7 @@ class TheSeoMachineBackendController
         $quantity_per_batch = get_option('tsm_quantity_per_batch');
         $time_between_batches = get_option('tsm_time_between_batches');
         $current_columns_to_show = get_option('tsm_current_columns_to_show');
+        $tsm_db_version = get_option('tsm_db_version');
 
         include tsm_PATH.'view/main.php';
     }

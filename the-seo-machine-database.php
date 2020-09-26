@@ -6,7 +6,7 @@ class TheSeoMachineDatabase
 {
     private static $instance;
 
-    private $current_version = 1;
+    private $current_version = 2;
 
     public static function get_instance()
     {
@@ -153,13 +153,28 @@ class TheSeoMachineDatabase
         $db_version = get_option('tsm_db_version');
 
         // Updates for v2..
-        /*if ($db_version < $this->current_version
+        if ($db_version < $this->current_version
         and 2 > $db_version) {
-            $sql = '';
+            $sql = 'alter table '.$wpdb->prefix.'the_seo_machine_url_number 
+            add foreign key (id_url)
+            references '.$wpdb->prefix.'the_seo_machine_url_entity(id)
+            on delete cascade;';
+            $wpdb->get_results($sql);
+            
+            $sql = 'alter table '.$wpdb->prefix.'the_seo_machine_url_string 
+            add foreign key (id_url)
+            references '.$wpdb->prefix.'the_seo_machine_url_entity(id)
+            on delete cascade;';
+            $wpdb->get_results($sql);
+            
+            $sql = 'alter table '.$wpdb->prefix.'the_seo_machine_url_text 
+            add foreign key (id_url)
+            references '.$wpdb->prefix.'the_seo_machine_url_entity(id)
+            on delete cascade;';
             $wpdb->get_results($sql);
 
             ++$db_version;
-        }*/
+        }
 
         update_option('tsm_db_version', $this->current_version);
     }
