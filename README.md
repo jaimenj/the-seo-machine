@@ -1,6 +1,6 @@
 # The SEO Machine
 
-A simple Web Application Firewall for WordPress.
+A SEO machine to study and improve your WordPress website.
 
 ![Plugin image](https://raw.githubusercontent.com/jaimenj/the-seo-machine/master/assets/screenshot-1.png)
 

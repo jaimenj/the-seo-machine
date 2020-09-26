@@ -10,7 +10,7 @@ Repository URL: https://github.com/jaimenj/the-seo-machine
 Plugin URI: https://jnjsite.com/the-seo-machine-for-wordpress/
 Contributors: jaimenj
 
-The SEO Machine inside your WordPress.
+A SEO machine to study and improve your WordPress website.
 
 == Description ==
 
