@@ -35,7 +35,7 @@ echo $_SERVER['REQUEST_URI'];
         <p>
             <input type="submit" name="tsm-submit" id="tsm-submit" class="button button-green tsm-btn-submit" value="Save this configs">
 
-            <label for="quantity_per_batch">Quantity per batch</label>
+            <label for="quantity_per_batch">Quantity per Batch</label>
             <select name="quantity_per_batch" id="quantity_per_batch">
                 <option value="1"<?= (1 == $quantity_per_batch ? ' selected' : ''); ?>>1</option>
                 <option value="2"<?= (2 == $quantity_per_batch ? ' selected' : ''); ?>>2</option>
@@ -49,7 +49,7 @@ echo $_SERVER['REQUEST_URI'];
                 <option value="10"<?= (10 == $quantity_per_batch ? ' selected' : ''); ?>>10</option>
             </select>
 
-            <label for="time_between_batches">Time between batches</label>
+            <label for="time_between_batches">Time between Batches</label>
             <select name="time_between_batches" id="time_between_batches">
                 <option value="1"<?= (1 == $time_between_batches ? ' selected' : ''); ?>>1s</option>
                 <option value="5"<?= (5 == $time_between_batches ? ' selected' : ''); ?>>5s</option>
@@ -137,6 +137,7 @@ echo $_SERVER['REQUEST_URI'];
 
 <hr>
 <p>Current DB version: <?= $tsm_db_version ?></p>
+<p>This plugin uses the awesome Datatables, you can find it here: <a href="https://www.datatables.net/" target="_blank">https://www.datatables.net/</a></p>
 <script>
     let weAreInTheSeoMachine = true
 </script>
