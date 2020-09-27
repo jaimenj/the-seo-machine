@@ -167,23 +167,16 @@ class TheSeoMachineAjaxController
         // Count items..
         $num_urls_in_queue = $wpdb->get_var(
             'SELECT count(*) FROM '.$wpdb->prefix.'the_seo_machine_queue;');
-        $num_urls_in_queue_not_visited = $wpdb->get_var(
+        $num_urls_in_queue_visited = $wpdb->get_var(
             'SELECT count(*) FROM '.$wpdb->prefix.'the_seo_machine_queue '
-            .'WHERE visited <> true;');
-
-        // Check status..
-        if ($num_urls_in_queue > 0) {
-            if ($num_urls_in_queue_not_visited > 0) {
-                $status = 'processing';
-            } else {
-                $status = 'finished';
-            }
-        } else {
-            $status = 'empty';
-        }
+            .'WHERE visited = true;');
+        $num_urls = $wpdb->get_var(
+            'SELECT count(*) FROM '.$wpdb->prefix.'the_seo_machine_url_entity;');
 
         // Return data..
-        echo $status;
+        echo $num_urls_in_queue.','
+            .$num_urls_in_queue_visited.','
+            .$num_urls;
 
         wp_die();
     }
@@ -235,9 +228,9 @@ class TheSeoMachineAjaxController
         } else {
             $status = 'finished';
         }
-        $status .= ' '.$num_urls_in_queue.' URLs in queue, '
+        /*$status .= ', '.$num_urls_in_queue.' URLs in queue, '
             .$num_urls_in_queue_not_visited.' not visited, '
-            .$num_urls.' URLs studied..';
+            .$num_urls.' URLs studied..';*/
 
         // Return data..
         echo $status;
