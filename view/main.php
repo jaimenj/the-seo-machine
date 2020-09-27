@@ -23,7 +23,7 @@ echo $_SERVER['REQUEST_URI'];
 
         <h1><span class="dashicons dashicons-performance tsm-icon"></span> The SEO Machine</h1>
 
-        <p><button type="button" name="tsm-btn-study-site" id="tsm-btn-study-site" class="button button-study-site">Study Site</button>
+        <p><button type="button" name="tsm-btn-study-site" id="tsm-btn-study-site" class="tsm-btn-study-site">Study Site</button>
         <span id="tsm-box-study-site-status">Standby</span>
         * If you are studying the site and close the window, the study will stop.<br>
         <div class="tsm-progress-bar-border">

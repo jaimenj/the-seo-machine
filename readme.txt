@@ -14,7 +14,7 @@ A SEO machine to study and improve your WordPress website.
 
 == Description ==
 
-A very simple plugin for WordPress that allows you to study the SEO of your website. It will show you how much URLs you have, number of h1 tags, number of links/CSS/JavaScripts/etc.. It will show you a lot of SEO insights info that will allow you to focus on the next improves that your website needs.
+A very simple plugin for WordPress that allows you to study the SEO of your website. It will show you how many URLs you have, number of h1/h2/h3/.. tags, number of links/CSS/JavaScripts/.., study of the text of every page, etc.. It will show you a lot of your SEO insights info that will allow you to focus on the next improves that your website needs.
 
 Features:
 
