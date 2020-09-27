@@ -104,10 +104,10 @@ class TheSeoMachineBackendController
         global $wpdb;
         
         $wpdb->get_results('TRUNCATE '.$wpdb->prefix.'the_seo_machine_queue;');
-        $wpdb->get_results('TRUNCATE '.$wpdb->prefix.'the_seo_machine_url_entity;');
         $wpdb->get_results('TRUNCATE '.$wpdb->prefix.'the_seo_machine_url_string;');
         $wpdb->get_results('TRUNCATE '.$wpdb->prefix.'the_seo_machine_url_text;');
         $wpdb->get_results('TRUNCATE '.$wpdb->prefix.'the_seo_machine_url_number;');
+        $wpdb->get_results('DELETE FROM '.$wpdb->prefix.'the_seo_machine_url_entity;');
 
         return '<div id="message" class="notice notice-success is-dismissible"><p>Queue and URLs data truncated!</p></div>';
     }

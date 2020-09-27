@@ -156,19 +156,19 @@ class TheSeoMachineDatabase
         if ($db_version < $this->current_version
         and 2 > $db_version) {
             $sql = 'alter table '.$wpdb->prefix.'the_seo_machine_url_number 
-            add foreign key (id_url)
+            add constraint fk_number_to_entity foreign key (id_url)
             references '.$wpdb->prefix.'the_seo_machine_url_entity(id)
             on delete cascade;';
             $wpdb->get_results($sql);
             
             $sql = 'alter table '.$wpdb->prefix.'the_seo_machine_url_string 
-            add foreign key (id_url)
+            add constraint fk_string_to_entity foreign key (id_url)
             references '.$wpdb->prefix.'the_seo_machine_url_entity(id)
             on delete cascade;';
             $wpdb->get_results($sql);
             
             $sql = 'alter table '.$wpdb->prefix.'the_seo_machine_url_text 
-            add foreign key (id_url)
+            add constraint fk_text_to_entity foreign key (id_url)
             references '.$wpdb->prefix.'the_seo_machine_url_entity(id)
             on delete cascade;';
             $wpdb->get_results($sql);
