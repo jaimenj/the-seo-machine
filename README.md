@@ -61,19 +61,21 @@ All the options configured into the plugin are removed when plugin is deleted, n
 
 = I've changed my website pages, what can I do to make a new study? =
 
-You can do two things. The one is to remove al data with the button that says 'Remove All Data' and start a new study. The second way is to us the button that says 'Reset Queue' and start a new study, al the data of your website will be updated without removing any row.
+You can do two things. The one is to remove al data with the button that says 'Remove All Data' and start a new study. The second way is to use the button that says 'Reset Queue' and start a new study, al the data of your website will be updated without removing the old URLs.
 
 = What is the Quantity per Batch config? =
 
-The study is done in batches of URLs studied. Every bacth must be done by the server in a maximum time of 30 seconds to avoid reaching the timeout server. So you can increase or decrease it for adjusting it acordingly to the size of your server.
+The study is done in batches of URLs studied. Every bacth must be done by the server in a maximum time of 30 seconds to avoid reaching this default timeout server (usually 30 seconds). So you can increase or decrease it for adjusting it acordingly to the size of your server.
 
 = What is the Time beetween Batches config? =
 
-The study is done in batches of URLs studied. When a batch is done, it will sleep to avoid blocking your server with too much processing. This amount of time of sleep is the Time beetween batches.
+The study is done in batches of URLs studied. When a batch is done, it will sleep to avoid blocking your server with too much processing. This amount of time of sleep is the Time beetween Batches.
 
 ## Screenshots
 
 1. The main view into the admin panel.
+
+![Plugin image](https://raw.githubusercontent.com/jaimenj/the-seo-machine/master/assets/screenshot-1.png)
 
 2. Configuration of columns to show in the admin panel.
 
