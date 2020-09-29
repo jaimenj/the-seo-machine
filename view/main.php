@@ -13,7 +13,10 @@ $current_columns_to_show_array = explode(',', $current_columns_to_show);
 
 <form method="post" enctype="multipart/form-data" action="<?php
 echo $_SERVER['REQUEST_URI'];
-?>" id="tsm_form" name="tsm_form">
+?>"
+id="tsm_form"
+name="tsm_form"
+data-wpajaxurl="<?= admin_url('admin-ajax.php') ?>">
 
     <div class="wrap">
         <span style="float: right">
