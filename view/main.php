@@ -47,9 +47,6 @@ data-wpajaxurl="<?= admin_url('admin-ajax.php') ?>">
             <table 
             class="records_list table table-striped table-bordered table-hover" 
             id="tsm-datatable" 
-            data-ajax_datatables_server_processing_url="<?php
-                echo get_site_url().'/wp-admin/admin-ajax.php?action=tsm_urls';
-            ?>"
             width="100%">
                 <thead>
                     <tr>
