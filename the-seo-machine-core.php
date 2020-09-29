@@ -23,7 +23,6 @@ class TheSeoMachineCore
         $this->dom = new \DOMDocument();
     }
 
-    // TODO
     public function study($current_item)
     {
         global $wpdb;
@@ -129,7 +128,6 @@ class TheSeoMachineCore
             if (substr($linkNode->getAttribute('href'), 0, strlen(get_site_url())) == get_site_url()) {
                 ++$data['qty_internal_links'];
 
-                // TODO
                 $new_url = $linkNode->getAttribute('href');
                 if (!empty(trim($new_url))
                 and '#' != substr($new_url, 0, 1)
@@ -157,7 +155,7 @@ class TheSeoMachineCore
 
         $data['content_study'] = $this->_get_content_study($dom, 30);
 
-        // text to HTML ratio
+        // TODO FIX text to HTML ratio
         $fullResponseLength = strlen($curl->response);
         if ($fullResponseLength > 0) {
             $theText = preg_replace('/(<script.*?>.*?<\/script>|<style.*?>.*?<\/style>|<.*?>|\r|\n|\t)/ms', '', $curl->response);

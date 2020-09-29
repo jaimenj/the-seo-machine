@@ -22,7 +22,6 @@ class TheSeoMachineAjaxController
         add_action('wp_ajax_tsm_do_batch', [$this, 'tsm_do_batch']);
     }
 
-    // TODO
     public function tsm_urls()
     {
         if (!current_user_can('administrator')) {
