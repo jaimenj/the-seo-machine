@@ -101,7 +101,7 @@ class TheSeoMachineAjaxController
         $order_by_clauses = [];
         if (!empty($_POST['order'])) {
             foreach ($_POST['order'] as $order) {
-                $order_by_clauses[] = $_POST['columns'][$order['column']]['name'].' '.$order['dir'];
+                $order_by_clauses[] = sanitize_text_field($_POST['columns'][$order['column']]['name']).' '.sanitize_text_field($order['dir']);
             }
         }
 
