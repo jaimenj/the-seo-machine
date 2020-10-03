@@ -28,18 +28,18 @@ class TheSeoMachineCore
         global $wpdb;
         $this->current_item = $current_item;
 
-        $curl = curl_init();
-        curl_setopt($curl, CURLOPT_URL, $current_item->url);
-        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-        $this->response_html = curl_exec($curl);
-        $http_code = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+        $time_start = microtime(true);
+        $result = wp_remote_get($current_item->url, ['redirection' => 0]);
+        $time_end = microtime(true);
+        $time_consumed = $time_end - $time_start;
+
+        $this->response_html = $result['body'];
+        $http_code = $result['response']['code'];
 
         // Check if it is a redirection..
         if ($http_code >= 300 and $http_code <= 399) {
-            $url_redirect = curl_getinfo($curl, CURLINFO_REDIRECT_URL);
-
             TheSeoMachineDatabase::get_instance()->save_url_in_queue(
-                $url_redirect,
+                $result['headers']['location'],
                 ($current_item->level + 1),
                 $current_item->url
             );
@@ -50,18 +50,18 @@ class TheSeoMachineCore
                 'url' => $current_item->url,
                 'updated_at' => date('Y-m-d H:i:s'),
                 'level' => $current_item->level,
+                'http_code' => $http_code,
+                'time_consumed' => $time_consumed,
+                'size_download' => $result['headers']['content-length']
             ];
 
-            $this->_prepare_url_insights_data($curl, $data);
-            $this->_prepare_url_technics_data($curl, $data);
+            $this->_prepare_url_insights_data($result, $data);
 
             TheSeoMachineDatabase::get_instance()->save_url($data);
         }
-
-        curl_close($curl);
     }
 
-    private function _prepare_url_insights_data($curl, &$data)
+    private function _prepare_url_insights_data($result, &$data)
     {
         $dom = $this->dom;
         @$dom->loadHTML($this->response_html);
@@ -156,41 +156,15 @@ class TheSeoMachineCore
         $data['content_study'] = $this->_get_content_study($dom, 30);
 
         // TODO FIX text to HTML ratio
-        $fullResponseLength = strlen($curl->response);
+        $fullResponseLength = strlen($this->response_html);
         if ($fullResponseLength > 0) {
-            $theText = preg_replace('/(<script.*?>.*?<\/script>|<style.*?>.*?<\/style>|<.*?>|\r|\n|\t)/ms', '', $curl->response);
+            $theText = preg_replace('/(<script.*?>.*?<\/script>|<style.*?>.*?<\/style>|<.*?>|\r|\n|\t)/ms', '', $this->response_html);
             $theText = preg_replace('/ +/ms', ' ', $theText);
             $textLength = strlen($theText);
             $data['text_to_html_ratio'] = 100 * $textLength / $fullResponseLength;
         } else {
             $data['text_to_html_ratio'] = 0;
         }
-    }
-
-    private function _prepare_url_technics_data($curl, &$data)
-    {
-        $data['curlinfo_efective_url'] = curl_getinfo($curl, CURLINFO_EFFECTIVE_URL);
-        $data['curlinfo_http_code'] = curl_getinfo($curl, CURLINFO_HTTP_CODE);
-        $data['curlinfo_filetime'] = curl_getinfo($curl, CURLINFO_FILETIME);
-        $data['curlinfo_total_time'] = curl_getinfo($curl, CURLINFO_TOTAL_TIME);
-        $data['curlinfo_namelookup_time'] = curl_getinfo($curl, CURLINFO_NAMELOOKUP_TIME);
-        $data['curlinfo_connect_time'] = curl_getinfo($curl, CURLINFO_CONNECT_TIME);
-        $data['curlinfo_pretransfer_time'] = curl_getinfo($curl, CURLINFO_PRETRANSFER_TIME);
-        $data['curlinfo_starttransfer_time'] = curl_getinfo($curl, CURLINFO_STARTTRANSFER_TIME);
-        $data['curlinfo_redirect_count'] = curl_getinfo($curl, CURLINFO_REDIRECT_COUNT);
-        $data['curlinfo_redirect_time'] = curl_getinfo($curl, CURLINFO_REDIRECT_TIME);
-        $data['curlinfo_redirect_url'] = curl_getinfo($curl, CURLINFO_REDIRECT_URL);
-        $data['curlinfo_primary_ip'] = curl_getinfo($curl, CURLINFO_PRIMARY_IP);
-        $data['curlinfo_primary_port'] = curl_getinfo($curl, CURLINFO_PRIMARY_PORT);
-        $data['curlinfo_size_download'] = curl_getinfo($curl, CURLINFO_SIZE_DOWNLOAD);
-        $data['curlinfo_speed_download'] = curl_getinfo($curl, CURLINFO_SPEED_DOWNLOAD);
-        $data['curlinfo_request_size'] = curl_getinfo($curl, CURLINFO_REQUEST_SIZE);
-        $data['curlinfo_content_length_download'] = curl_getinfo($curl, CURLINFO_CONTENT_LENGTH_DOWNLOAD);
-        $data['curlinfo_content_type'] = curl_getinfo($curl, CURLINFO_CONTENT_TYPE);
-        $data['curlinfo_response_code'] = curl_getinfo($curl, CURLINFO_RESPONSE_CODE);
-        $data['curlinfo_http_connectcode'] = curl_getinfo($curl, CURLINFO_HTTP_CONNECTCODE);
-        $data['curlinfo_num_connects'] = curl_getinfo($curl, CURLINFO_NUM_CONNECTS);
-        $data['curlinfo_appconnect_time'] = curl_getinfo($curl, CURLINFO_APPCONNECT_TIME);
     }
 
     private function _get_content_study($dom, $maxReturn = 20)
