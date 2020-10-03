@@ -53,7 +53,7 @@ class TheSeoMachine
         add_option('tsm_db_version', 0);
         add_option('tsm_quantity_per_batch', '2');
         add_option('tsm_time_between_batches', '30');
-        add_option('tsm_current_columns_to_show', 'id,url,updated_at,level,title,curlinfo_response_code');
+        add_option('tsm_current_columns_to_show', 'id,url,updated_at,level,title,http_code,time_consumed,size_download');
 
         TheSeoMachineDatabase::get_instance()->create_initial_tables();
     }
@@ -79,15 +79,13 @@ class TheSeoMachine
     public function enqueue_admin_css_js()
     {
         wp_enqueue_style('tsm_style_datatables', plugin_dir_url(__FILE__).'lib/datatables.min.css', false, '0.1');
-        wp_enqueue_style('tsm_style_svgmap', plugin_dir_url(__FILE__).'lib/svgMap.min.css', false, '0.1');
-        wp_enqueue_style('tsm_custom_style', plugin_dir_url(__FILE__).'lib/tsm.min.css', false, '0.1.3');
+        wp_enqueue_style('tsm_custom_style', plugin_dir_url(__FILE__).'lib/tsm.min.css', false, '0.1.4');
 
         wp_enqueue_script('tsm_script_pdfmake', plugin_dir_url(__FILE__).'lib/pdfmake.min.js', [], '0.1');
         wp_enqueue_script('tsm_script_vfs_fonts', plugin_dir_url(__FILE__).'lib/vfs_fonts.js', [], '0.1');
         wp_enqueue_script('tsm_script_datatables', plugin_dir_url(__FILE__).'lib/datatables.min.js', [], '0.1');
         wp_enqueue_script('tsm_script_chart', plugin_dir_url(__FILE__).'lib/Chart.min.js', [], '0.1');
-        wp_enqueue_script('tsm_script_svgmap', plugin_dir_url(__FILE__).'lib/svgMap.min.js', [], '0.1');
-        wp_enqueue_script('tsm_custom_script', plugin_dir_url(__FILE__).'lib/tsm.min.js', [], '0.1.3');
+        wp_enqueue_script('tsm_custom_script', plugin_dir_url(__FILE__).'lib/tsm.min.js', [], '0.1.4');
     }
 }
 
