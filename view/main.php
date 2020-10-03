@@ -16,7 +16,7 @@ echo $_SERVER['REQUEST_URI'];
 ?>"
 id="tsm_form"
 name="tsm_form"
-data-wpajaxurl="<?= admin_url('admin-ajax.php') ?>">
+data-tsm_ajax_url="<?= admin_url('admin-ajax.php') ?>">
 
     <div class="wrap">
         <span style="float: right">
