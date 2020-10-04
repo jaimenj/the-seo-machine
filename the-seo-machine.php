@@ -9,12 +9,12 @@
  * Author URI: https://jnjsite.com/.
  */
 defined('ABSPATH') or die('No no no');
-define('tsm_PATH', plugin_dir_path(__FILE__));
+define('TSM_PATH', plugin_dir_path(__FILE__));
 
-include_once tsm_PATH.'the-seo-machine-database.php';
-include_once tsm_PATH.'the-seo-machine-core.php';
-include_once tsm_PATH.'the-seo-machine-backend-controller.php';
-include_once tsm_PATH.'the-seo-machine-ajax-controller.php';
+include_once TSM_PATH.'the-seo-machine-database.php';
+include_once TSM_PATH.'the-seo-machine-core.php';
+include_once TSM_PATH.'the-seo-machine-backend-controller.php';
+include_once TSM_PATH.'the-seo-machine-ajax-controller.php';
 
 class TheSeoMachine
 {

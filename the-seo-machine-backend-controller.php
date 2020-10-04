@@ -81,7 +81,7 @@ class TheSeoMachineBackendController
         $current_columns_to_show = get_option('tsm_current_columns_to_show');
         $tsm_db_version = get_option('tsm_db_version');
 
-        include tsm_PATH.'view/main.php';
+        include TSM_PATH.'view/main.php';
     }
 
     private function _save_main_configs()
