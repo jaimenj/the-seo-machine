@@ -33,29 +33,43 @@ class TheSeoMachineCore
         $time_end = microtime(true);
         $time_consumed = $time_end - $time_start;
 
-        $this->response_html = $result['body'];
-        $http_code = $result['response']['code'];
+        if (is_array($result) && !is_wp_error($result)) {
+            $this->response_html = $result['body'];
+            $http_code = $result['response']['code'];
 
-        // Check if it is a redirection..
-        if ($http_code >= 300 and $http_code <= 399) {
-            TheSeoMachineDatabase::get_instance()->save_url_in_queue(
-                $result['headers']['location'],
-                ($current_item->level + 1),
-                $current_item->url
-            );
+            // Check if it is a redirection..
+            if ($http_code >= 300 and $http_code <= 399) {
+                $new_url = $this->_prepare_new_url($result['headers']['location']);
+
+                TheSeoMachineDatabase::get_instance()->save_url_in_queue(
+                    $new_url,
+                    ($current_item->level + 1),
+                    $current_item->url
+                );
+            } else {
+                // It's a normal URL, saving..
+                $data = [
+                    'url' => $current_item->url,
+                    'updated_at' => date('Y-m-d H:i:s'),
+                    'level' => $current_item->level,
+                    'http_code' => $http_code,
+                    'time_consumed' => $time_consumed,
+                    'size_download' => $result['headers']['content-length'],
+                ];
+
+                $this->_prepare_url_insights_data($result, $data);
+
+                TheSeoMachineDatabase::get_instance()->save_url($data);
+            }
         } else {
-            // It's a normal URL, saving..
-
+            // WP_error!
             $data = [
                 'url' => $current_item->url,
                 'updated_at' => date('Y-m-d H:i:s'),
                 'level' => $current_item->level,
-                'http_code' => $http_code,
+                'http_code' => 'WP_ERROR',
                 'time_consumed' => $time_consumed,
-                'size_download' => $result['headers']['content-length']
             ];
-
-            $this->_prepare_url_insights_data($result, $data);
 
             TheSeoMachineDatabase::get_instance()->save_url($data);
         }
