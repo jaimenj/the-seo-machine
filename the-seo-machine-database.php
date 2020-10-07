@@ -24,7 +24,7 @@ class TheSeoMachineDatabase
 
     public function get_eav_attributes()
     {
-        return [
+        $data = [
             'id' => 'number',
             'url' => 'string',
             'updated_at' => 'string',
@@ -32,7 +32,6 @@ class TheSeoMachineDatabase
             'title' => 'string',
             'http_code' => 'number',
             'time_consumed' => 'number',
-            'size_download' => 'number',
             'meta_charset' => 'string',
             'meta_description' => 'string',
             'meta_keywords' => 'string',
@@ -63,7 +62,14 @@ class TheSeoMachineDatabase
             'qty_targeted_links' => 'number',
             'content_study' => 'text',
             'text_to_html_ratio' => 'number',
+            'starttransfer_time' => 'number',
         ];
+
+        foreach (TheSeoMachineCore::get_instance()->get_available_headers() as $header_name) {
+            $data[strtolower($header_name)] = 'string';
+        }
+
+        return $data;
     }
 
     public function create_initial_tables()
@@ -141,13 +147,13 @@ class TheSeoMachineDatabase
             references '.$wpdb->prefix.'the_seo_machine_url_entity(id)
             on delete cascade;';
             $wpdb->get_results($sql);
-            
+
             $sql = 'alter table '.$wpdb->prefix.'the_seo_machine_url_string 
             add constraint fk_string_to_entity foreign key (id_url)
             references '.$wpdb->prefix.'the_seo_machine_url_entity(id)
             on delete cascade;';
             $wpdb->get_results($sql);
-            
+
             $sql = 'alter table '.$wpdb->prefix.'the_seo_machine_url_text 
             add constraint fk_text_to_entity foreign key (id_url)
             references '.$wpdb->prefix.'the_seo_machine_url_entity(id)

@@ -8,6 +8,7 @@ class TheSeoMachineCore
     private $dom;
     private $response_html;
     private $current_item;
+    private $response;
 
     public static function get_instance()
     {
@@ -29,17 +30,18 @@ class TheSeoMachineCore
         $this->current_item = $current_item;
 
         $time_start = microtime(true);
-        $result = wp_remote_get($current_item->url, ['redirection' => 0]);
+        $response = wp_remote_get($current_item->url, ['redirection' => 0]);
         $time_end = microtime(true);
         $time_consumed = $time_end - $time_start;
+        $this->response = $response;
 
-        if (is_array($result) && !is_wp_error($result)) {
-            $this->response_html = $result['body'];
-            $http_code = $result['response']['code'];
+        if (is_array($response) && !is_wp_error($response)) {
+            $this->response_html = $response['body'];
+            $http_code = $response['response']['code'];
 
             // Check if it is a redirection..
             if ($http_code >= 300 and $http_code <= 399) {
-                $new_url = $this->_prepare_new_url($result['headers']['location']);
+                $new_url = $this->_prepare_new_url($response['headers']['location']);
 
                 TheSeoMachineDatabase::get_instance()->save_url_in_queue(
                     $new_url,
@@ -52,12 +54,12 @@ class TheSeoMachineCore
                     'url' => $current_item->url,
                     'updated_at' => date('Y-m-d H:i:s'),
                     'level' => $current_item->level,
-                    'http_code' => $http_code,
                     'time_consumed' => $time_consumed,
-                    'size_download' => $result['headers']['content-length'],
                 ];
 
-                $this->_prepare_url_insights_data($result, $data);
+                $this->_prepare_url_insights_data($data);
+                $this->_prepare_url_ttfb_data($data);
+                $this->_prepare_url_technics_data($data);
 
                 TheSeoMachineDatabase::get_instance()->save_url($data);
             }
@@ -67,7 +69,7 @@ class TheSeoMachineCore
                 'url' => $current_item->url,
                 'updated_at' => date('Y-m-d H:i:s'),
                 'level' => $current_item->level,
-                'http_code' => 'WP_ERROR',
+                'http_code' => '-1',
                 'time_consumed' => $time_consumed,
             ];
 
@@ -75,7 +77,7 @@ class TheSeoMachineCore
         }
     }
 
-    private function _prepare_url_insights_data($result, &$data)
+    private function _prepare_url_insights_data(&$data)
     {
         $dom = $this->dom;
         @$dom->loadHTML($this->response_html);
@@ -264,5 +266,108 @@ class TheSeoMachineCore
         }
 
         return $new_url;
+    }
+
+    /**
+     * The plugin is refactored without using curl, so using your wp_remote_get.
+     * But it's missing the info of CURLINFO_STARTTRANSFER_TIME. Because that value is the TTFB (Time To First Byte),
+     * an important value to study the SEO of a page. The TTFB is the time between the request of page is received
+     * to the server, then WordPress process it, and it starts returning the content of the page (not finishing). If
+     * this TTFB is too high that's very bad. That's because this CURL usage is here..
+     */
+    public function _prepare_url_ttfb_data(&$data)
+    {
+        if (false !== function_exists('curl_init')) {
+            // curl_init is defined, cURL is enabled..
+
+            usleep(0.2 * 1000000);
+
+            $curlHandler = curl_init();
+            curl_setopt($curlHandler, CURLOPT_URL, $this->current_item->url);
+            curl_setopt($curlHandler, CURLOPT_RETURNTRANSFER, true);
+            curl_exec($curlHandler);
+            $data['starttransfer_time'] = curl_getinfo($curlHandler)['starttransfer_time'];
+            curl_close($curlHandler);
+
+            usleep(0.2 * 1000000);
+        }
+    }
+
+    public function _prepare_url_technics_data(&$data)
+    {
+        $response = $this->response;
+
+        $data['http_code'] = $response['response']['code'];
+
+        foreach ($this->get_available_headers() as $header_name) {
+            $header_name = strtolower($header_name);
+            if (isset($this->response['headers'][$header_name])) {
+                $data[$header_name] = $this->response['headers'][$header_name];
+            }
+        }
+    }
+
+    public function get_available_headers()
+    {
+        return [
+            'Access-Control-Allow-Origin',
+            'Access-Control-Allow-Credentials',
+            'Access-Control-Expose-Headers',
+            'Access-Control-Max-Age',
+            'Access-Control-Allow-Methods',
+            'Access-Control-Allow-Headers',
+            'Accept-Patch',
+            'Accept-Ranges',
+            'Age',
+            'Allow',
+            'Alt-Svc',
+            'Cache-Control',
+            'Connection',
+            'Content-Disposition',
+            'Content-Encoding',
+            'Content-Language',
+            'Content-Length',
+            'Content-Location',
+            'Content-Range',
+            'Content-Type',
+            'Date',
+            'Delta-Base',
+            'ETag',
+            'Expires',
+            'IM',
+            'Last-Modified',
+            'Link',
+            'Location',
+            'P3P',
+            'Pragma',
+            'Proxy-Authenticate',
+            'Public-Key-Pins',
+            'Retry-After',
+            'Server',
+            'Set-Cookie',
+            'Strict-Transport-Security',
+            'Trailer',
+            'Transfer-Encoding',
+            'Tk',
+            'Upgrade',
+            'Vary',
+            'Via',
+            'Warning',
+            'WWW-Authenticate',
+            'X-Frame-Options',
+            'Content-Security-Policy',
+            'Refresh',
+            'Status',
+            'Timing-Allow-Origin',
+            'X-Content-Duration',
+            'X-Content-Type-Options',
+            'X-Content-Security-Policy',
+            'X-Correlation-ID',
+            'X-WebKit-CSP',
+            'X-Powered-By',
+            'X-Request-ID',
+            'X-UA-Compatible',
+            'X-XSS-Protection',
+        ];
     }
 }
