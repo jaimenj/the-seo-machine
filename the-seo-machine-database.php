@@ -32,6 +32,7 @@ class TheSeoMachineDatabase
             'title' => 'string',
             'http_code' => 'number',
             'time_consumed' => 'number',
+            'starttransfer_time' => 'number',
             'meta_charset' => 'string',
             'meta_description' => 'string',
             'meta_keywords' => 'string',
@@ -62,7 +63,6 @@ class TheSeoMachineDatabase
             'qty_targeted_links' => 'number',
             'content_study' => 'text',
             'text_to_html_ratio' => 'number',
-            'starttransfer_time' => 'number',
         ];
 
         foreach (TheSeoMachineCore::get_instance()->get_available_headers() as $header_name) {
