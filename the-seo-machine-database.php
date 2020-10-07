@@ -66,7 +66,7 @@ class TheSeoMachineDatabase
         ];
 
         foreach (TheSeoMachineCore::get_instance()->get_available_headers() as $header_name) {
-            $data[strtolower($header_name)] = 'string';
+            $data[str_replace('-', '_', strtolower($header_name))] = 'string';
         }
 
         return $data;
@@ -223,6 +223,7 @@ class TheSeoMachineDatabase
         // Finally insert the new data values..
         foreach ($data as $key => $value) {
             if ('url' != $key) {
+                $key = str_replace('-', '_', strtolower($key));
                 $wpdb->get_results(
                     'INSERT INTO '.$wpdb->prefix.'the_seo_machine_url_'
                     .$this->get_eav_attributes()[$key].' (id_url, code, value) '

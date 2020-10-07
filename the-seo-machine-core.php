@@ -141,31 +141,24 @@ class TheSeoMachineCore
         // The links..
         $data['qty_internal_links'] = $data['qty_external_links'] = $data['qty_targeted_links'] = 0;
         foreach ($dom->getElementsByTagName('a') as $linkNode) {
-            if (substr($linkNode->getAttribute('href'), 0, strlen(get_site_url())) == get_site_url()) {
-                ++$data['qty_internal_links'];
+            $new_url = $linkNode->getAttribute('href');
+            $new_url = $this->_prepare_new_url($new_url);
 
-                $new_url = $linkNode->getAttribute('href');
-                if (!empty(trim($new_url))
-                and '#' != substr($new_url, 0, 1)
-                and 'email:' != substr($new_url, 0, 6)
-                and 'mailto:' != substr($new_url, 0, 7)
-                and 'tel:' != substr($new_url, 0, 4)
-                and 'skype:' != substr($new_url, 0, 6)
-                and 'javascript:' != substr($new_url, 0, 11)
-                and 'whatsapp:' != substr($new_url, 0, 9)) {
-                    $new_url = $this->_prepare_new_url($new_url);
+            if (!empty($new_url)) {
+                if (substr($new_url, 0, strlen(get_site_url())) == get_site_url()) {
+                    ++$data['qty_internal_links'];
 
                     TheSeoMachineDatabase::get_instance()->save_url_in_queue(
                         $new_url,
                         $this->current_item->level + 1,
                         $this->current_item->url
                     );
+                } else {
+                    ++$data['qty_external_links'];
                 }
-            } else {
-                ++$data['qty_external_links'];
-            }
-            if ($linkNode->getAttribute('target')) {
-                ++$data['qty_targeted_links'];
+                if ($linkNode->getAttribute('target')) {
+                    ++$data['qty_targeted_links'];
+                }
             }
         }
 
@@ -241,29 +234,44 @@ class TheSeoMachineCore
 
     private function _prepare_new_url($new_url)
     {
-        // remove query string
-        $new_url = preg_replace('/\?.*/', '', $new_url);
+        //echo $new_url;
 
-        // remove anchors
-        $new_url = preg_replace('/#.*/', '', $new_url);
+        if (!empty(trim($new_url))
+        and '#' != substr($new_url, 0, 1)
+        and 'email:' != substr($new_url, 0, 6)
+        and 'mailto:' != substr($new_url, 0, 7)
+        and 'tel:' != substr($new_url, 0, 4)
+        and 'skype:' != substr($new_url, 0, 6)
+        and 'javascript:' != substr($new_url, 0, 11)
+        and 'whatsapp:' != substr($new_url, 0, 9)) {
+            // remove query string
+            $new_url = preg_replace('/\?.*/', '', $new_url);
 
-        // relative and absolute URLs
-        if ('http' != substr($new_url, 0, 4)) {
-            if ('//' == substr($new_url, 0, 2)) {
-                if ('https' == substr($this->current_item->url, 0, 5)) {
-                    $new_url = 'https:'.$new_url;
-                } else {
-                    $new_url = 'http:'.$new_url;
-                }
-            } elseif ('/' == substr($new_url, 0, 1)) {
-                $new_url = ('/' == substr(get_site_url(), -1) ? get_site_url() : get_site_url().'/')
+            // remove anchors
+            $new_url = preg_replace('/#.*/', '', $new_url);
+
+            // relative and absolute URLs
+            if ('http' != substr($new_url, 0, 4)) {
+                if ('//' == substr($new_url, 0, 2)) {
+                    if ('https' == substr($this->current_item->url, 0, 5)) {
+                        $new_url = 'https:'.$new_url;
+                    } else {
+                        $new_url = 'http:'.$new_url;
+                    }
+                } elseif ('/' == substr($new_url, 0, 1)) {
+                    $new_url = ('/' == substr(get_site_url(), -1) ? get_site_url() : get_site_url().'/')
                     .substr($new_url, 1, strlen($new_url) - 1);
+                }
             }
+
+            if (get_site_url() == $new_url and '/' != substr($new_url, -1)) {
+                $new_url .= '/';
+            }
+        } else {
+            $new_url = '';
         }
 
-        if (get_site_url() == $new_url and '/' != substr($new_url, -1)) {
-            $new_url .= '/';
-        }
+        //echo ' => '.$new_url.PHP_EOL;
 
         return $new_url;
     }

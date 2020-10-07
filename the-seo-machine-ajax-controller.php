@@ -38,14 +38,14 @@ class TheSeoMachineAjaxController
         $current_columns_to_show = get_option('tsm_current_columns_to_show');
         $current_columns_to_show = explode(',', $current_columns_to_show);
         foreach ($eav_attributes as $key => $value) {
-            if(!in_array($key, $current_columns_to_show)){
+            if (!in_array($key, $current_columns_to_show)) {
                 unset($eav_attributes[$key]);
             }
         }
         foreach ($eav_attributes as $key => $value) {
             if ('id' != $key and 'url' != $key) {
                 $sql .= 'u'.$key.'.value '.$key;
-            } else{
+            } else {
                 $sql .= 'ue.'.$key.' '.$key;
             }
             if ($key != array_key_last($eav_attributes)) {
@@ -55,7 +55,8 @@ class TheSeoMachineAjaxController
         $from_sentence .= ' FROM '.$wpdb->prefix.'the_seo_machine_url_entity ue ';
         foreach ($eav_attributes as $key => $value) {
             if ('id' != $key and 'url' != $key) {
-                $from_sentence .= 'LEFT JOIN '.$wpdb->prefix.'the_seo_machine_url_'.$value.' u'.$key.' ON u'.$key.'.id_url = ue.id AND u'.$key.".code = '".$key."' ";
+                $from_sentence .= 'LEFT JOIN '.$wpdb->prefix.'the_seo_machine_url_'.$value.' u'.$key
+                    .' ON u'.$key.'.id_url = ue.id AND u'.$key.".code = '".$key."' ";
             }
         }
         $sql .= $from_sentence;
