@@ -187,12 +187,12 @@ class TheSeoMachineDatabase
     {
         global $wpdb;
 
-        $results = $wpdb->get_results(
+        $result = $wpdb->get_row(
             'SELECT * FROM '.$wpdb->prefix.'the_seo_machine_url_entity '
             ."WHERE url LIKE '".$data['url']."';"
         );
 
-        if (empty($results)) {
+        if (empty($result)) {
             // New URL..
             $wpdb->get_results(
                 'INSERT INTO '.$wpdb->prefix.'the_seo_machine_url_entity (url) '
@@ -204,18 +204,18 @@ class TheSeoMachineDatabase
             );
         } else {
             // If updating an existing URL, remove the old values..
-            $id_url = $results->id;
+            $id_url = $result->id;
 
             $wpdb->get_results(
-                'REMOVE FROM '.$wpdb->prefix.'the_seo_machine_url_string '
+                'DELETE FROM '.$wpdb->prefix.'the_seo_machine_url_string '
                 .'WHERE id_url = '.$id_url.';'
             );
             $wpdb->get_results(
-                'REMOVE FROM '.$wpdb->prefix.'the_seo_machine_url_text '
+                'DELETE FROM '.$wpdb->prefix.'the_seo_machine_url_text '
                 .'WHERE id_url = '.$id_url.';'
             );
             $wpdb->get_results(
-                'REMOVE FROM '.$wpdb->prefix.'the_seo_machine_url_number '
+                'DELETE FROM '.$wpdb->prefix.'the_seo_machine_url_number '
                 .'WHERE id_url = '.$id_url.';'
             );
         }
