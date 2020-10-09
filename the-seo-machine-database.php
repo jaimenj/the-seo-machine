@@ -32,6 +32,7 @@ class TheSeoMachineDatabase
             'title' => 'string',
             'http_code' => 'number',
             'time_consumed' => 'number',
+            'starttransfer_time' => 'number',
             'meta_charset' => 'string',
             'meta_description' => 'string',
             'meta_keywords' => 'string',
@@ -62,11 +63,10 @@ class TheSeoMachineDatabase
             'qty_targeted_links' => 'number',
             'content_study' => 'text',
             'text_to_html_ratio' => 'number',
-            'starttransfer_time' => 'number',
         ];
 
         foreach (TheSeoMachineCore::get_instance()->get_available_headers() as $header_name) {
-            $data[strtolower($header_name)] = 'string';
+            $data[str_replace('-', '_', strtolower($header_name))] = 'string';
         }
 
         return $data;
@@ -223,6 +223,7 @@ class TheSeoMachineDatabase
         // Finally insert the new data values..
         foreach ($data as $key => $value) {
             if ('url' != $key) {
+                $key = str_replace('-', '_', strtolower($key));
                 $wpdb->get_results(
                     'INSERT INTO '.$wpdb->prefix.'the_seo_machine_url_'
                     .$this->get_eav_attributes()[$key].' (id_url, code, value) '
