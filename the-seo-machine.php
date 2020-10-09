@@ -4,7 +4,7 @@
  * Plugin URI: https://jnjsite.com/the-seo-machine-for-wordpress/
  * License: GPLv2 or later
  * Description: A SEO machine to study and improve your WordPress website.
- * Version: 0.1
+ * Version: 0.2
  * Author: Jaime Niñoles
  * Author URI: https://jnjsite.com/.
  */

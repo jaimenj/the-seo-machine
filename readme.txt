@@ -4,7 +4,7 @@ Tags: wordpress, seo
 Requires at least: 5.0
 Tested up to: 5.5
 Requires PHP: 7.2
-Stable tag: 0.1
+Stable tag: 0.2
 License: GPLv2 or later
 Repository URL: https://github.com/jaimenj/the-seo-machine
 Plugin URI: https://jnjsite.com/the-seo-machine-for-wordpress/
@@ -28,9 +28,16 @@ Features:
 
 == Installation ==
 
-Install uploading manually the files to the server:
+1. Search it in the WordPress admin section of plugins.
+2. Click install when you find it.
+3. Activate the plugin in the WordPress backend menu of plugins.
+4. Got to the admin section of The SEO Machine.
+6. See how it works and play with it configs.
+7. Enjoy.. 🙂
 
-1. Copy the files in the directory /wp-content/plugins/the-seo-machine/ like others plugins.
+Alternative install uploading manually the files to the server:
+
+1. Copy the files in the directory /wp-content/plugins/the-seo-machine/ like others plugins, or upload it it the admin section into a .zip file.
 2. Activate the plugin in the WordPress backend menu of plugins.
 3. Got to the admin section of The SEO Machine.
 4. See how it works and play with it configs, fully personalizable.
@@ -70,6 +77,16 @@ The study is done in batches of URLs studied. When a batch is done, it will slee
 2. Configuration of columns to show in the admin panel.
 
 == Changelog ==
+
+= v0.2 =
+* Adding all known or most used response headers to the data saved.
+* Added TTFB to the saving data.
+* Reviewed and fixed security problems with the query into Datatables when filtering.
+* Changing to wp_remote_get() for primary usage.
+* Added al libraries into the plugin.
+* Bugfix Datatables col images.
+* New progress bar for showing the current study.
+* Fix DB queries for removing data, and improving query using foreign keys.
 
 = v0.1 =
 * Initial version.
