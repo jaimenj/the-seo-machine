@@ -118,11 +118,11 @@ class TheSeoMachineAjaxController
             }
         }
         if (!empty($where_filtered)) {
-            $sql .= 'WHERE '.$where_filtered;
-            $sql_filtered .= 'WHERE '.$where_filtered;
+            $sql .= ' WHERE '.$where_filtered;
+            $sql_filtered .= ' WHERE '.$where_filtered;
         }
         if (!empty($order_by_clauses)) {
-            $sql .= 'ORDER BY '.implode(', ', $order_by_clauses);
+            $sql .= ' ORDER BY '.implode(', ', $order_by_clauses);
         }
         $sql .= ' LIMIT '.intval($_POST['length']).' OFFSET '.intval($_POST['start']);
         $results = $wpdb->get_results($sql);

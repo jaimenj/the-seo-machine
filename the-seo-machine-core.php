@@ -234,7 +234,7 @@ class TheSeoMachineCore
 
     private function _prepare_new_url($new_url)
     {
-        //echo $new_url;
+        //file_put_contents(__DIR__.'/test.txt', $new_url.PHP_EOL, FILE_APPEND);
 
         if (!empty(trim($new_url))
         and '#' != substr($new_url, 0, 1)
@@ -271,7 +271,7 @@ class TheSeoMachineCore
             $new_url = '';
         }
 
-        //echo ' => '.$new_url.PHP_EOL;
+        //file_put_contents(__DIR__.'/test.txt', ' => '.$new_url.PHP_EOL, FILE_APPEND);
 
         return $new_url;
     }
