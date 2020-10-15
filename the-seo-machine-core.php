@@ -165,13 +165,13 @@ class TheSeoMachineCore
 
         $data['content_study'] = $this->_get_content_study($dom, 30);
 
-        // TODO FIX text to HTML ratio
+        // Text to HTML ratio
         $fullResponseLength = strlen($this->response_html);
         if ($fullResponseLength > 0) {
             $theText = preg_replace('/(<script.*?>.*?<\/script>|<style.*?>.*?<\/style>|<.*?>|\r|\n|\t)/ms', '', $this->response_html);
             $theText = preg_replace('/ +/ms', ' ', $theText);
             $textLength = strlen($theText);
-            $data['text_to_html_ratio'] = 100 * $textLength / $fullResponseLength;
+            $data['text_to_html_ratio'] = number_format($textLength / $fullResponseLength, 2);
         } else {
             $data['text_to_html_ratio'] = 0;
         }
