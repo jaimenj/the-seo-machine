@@ -52,6 +52,7 @@ class TheSeoMachineCore
                 // It's a normal URL, saving..
                 $data = [
                     'url' => $current_item->url,
+                    'found_in_url' => $current_item->found_in_url,
                     'updated_at' => date('Y-m-d H:i:s'),
                     'level' => $current_item->level,
                     'time_consumed' => $time_consumed,

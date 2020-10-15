@@ -53,7 +53,7 @@ class TheSeoMachine
         add_option('tsm_db_version', 0);
         add_option('tsm_quantity_per_batch', '2');
         add_option('tsm_time_between_batches', '30');
-        add_option('tsm_current_columns_to_show', 'id,url,updated_at,level,title,http_code,time_consumed');
+        add_option('tsm_current_columns_to_show', 'id,url,found_in_url,updated_at,level,title,http_code,time_consumed');
 
         TheSeoMachineDatabase::get_instance()->create_initial_tables();
     }
