@@ -48,9 +48,10 @@ class TheSeoMachineCore
                     ($current_item->level + 1),
                     $current_item->url
                 );
-            } else {
-                // It's a normal URL, saving..
-                $data = [
+            }
+
+            // If it's a normal URL or also a redirection, saving..
+            $data = [
                     'url' => $current_item->url,
                     'found_in_url' => $current_item->found_in_url,
                     'updated_at' => date('Y-m-d H:i:s'),
@@ -58,12 +59,11 @@ class TheSeoMachineCore
                     'time_consumed' => $time_consumed,
                 ];
 
-                $this->_prepare_url_insights_data($data);
-                $this->_prepare_url_ttfb_data($data);
-                $this->_prepare_url_technics_data($data);
+            $this->_prepare_url_insights_data($data);
+            $this->_prepare_url_ttfb_data($data);
+            $this->_prepare_url_technics_data($data);
 
-                TheSeoMachineDatabase::get_instance()->save_url($data);
-            }
+            TheSeoMachineDatabase::get_instance()->save_url($data);
         } else {
             // WP_error!
             $data = [
