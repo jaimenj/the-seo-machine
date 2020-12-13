@@ -90,6 +90,12 @@ The study is done in batches of URLs studied. When a batch is done, it will slee
 
 ## Changelog
 
+### v0.3
+
+* Adding found_in_url data.
+* Saving also redirections.
+* Checked with WP version 5.6.
+
 ### v0.2
 
 * Adding all known or most used response headers to the data saved.
