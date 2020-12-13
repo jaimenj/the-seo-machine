@@ -4,7 +4,7 @@ Tags: wordpress, seo
 Requires at least: 5.0
 Tested up to: 5.6
 Requires PHP: 7.2
-Stable tag: 0.2
+Stable tag: 0.3
 License: GPLv2 or later
 Repository URL: https://github.com/jaimenj/the-seo-machine
 Plugin URI: https://jnjsite.com/the-seo-machine-for-wordpress/
