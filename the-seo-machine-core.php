@@ -48,21 +48,22 @@ class TheSeoMachineCore
                     ($current_item->level + 1),
                     $current_item->url
                 );
-            } else {
-                // It's a normal URL, saving..
-                $data = [
+            }
+
+            // If it's a normal URL or also a redirection, saving..
+            $data = [
                     'url' => $current_item->url,
+                    'found_in_url' => $current_item->found_in_url,
                     'updated_at' => date('Y-m-d H:i:s'),
                     'level' => $current_item->level,
                     'time_consumed' => $time_consumed,
                 ];
 
-                $this->_prepare_url_insights_data($data);
-                $this->_prepare_url_ttfb_data($data);
-                $this->_prepare_url_technics_data($data);
+            $this->_prepare_url_insights_data($data);
+            $this->_prepare_url_ttfb_data($data);
+            $this->_prepare_url_technics_data($data);
 
-                TheSeoMachineDatabase::get_instance()->save_url($data);
-            }
+            TheSeoMachineDatabase::get_instance()->save_url($data);
         } else {
             // WP_error!
             $data = [
@@ -164,13 +165,13 @@ class TheSeoMachineCore
 
         $data['content_study'] = $this->_get_content_study($dom, 30);
 
-        // TODO FIX text to HTML ratio
+        // Text to HTML ratio
         $fullResponseLength = strlen($this->response_html);
         if ($fullResponseLength > 0) {
             $theText = preg_replace('/(<script.*?>.*?<\/script>|<style.*?>.*?<\/style>|<.*?>|\r|\n|\t)/ms', '', $this->response_html);
             $theText = preg_replace('/ +/ms', ' ', $theText);
             $textLength = strlen($theText);
-            $data['text_to_html_ratio'] = 100 * $textLength / $fullResponseLength;
+            $data['text_to_html_ratio'] = number_format($textLength / $fullResponseLength, 2);
         } else {
             $data['text_to_html_ratio'] = 0;
         }

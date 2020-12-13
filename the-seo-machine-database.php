@@ -27,6 +27,7 @@ class TheSeoMachineDatabase
         $data = [
             'id' => 'number',
             'url' => 'string',
+            'found_in_url' => 'string',
             'updated_at' => 'string',
             'level' => 'number',
             'title' => 'string',

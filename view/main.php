@@ -26,13 +26,13 @@ data-tsm_ajax_url="<?= admin_url('admin-ajax.php') ?>">
 
         <h1><span class="dashicons dashicons-performance tsm-icon"></span> The SEO Machine</h1>
 
-        <p><button type="button" name="tsm-btn-study-site" id="tsm-btn-study-site" class="tsm-btn-study-site">Study Site</button>
+        <button type="button" name="tsm-btn-study-site" id="tsm-btn-study-site" class="tsm-btn-study-site">Study Site</button>
         <span id="tsm-box-study-site-status">Standby</span>
         * If you are studying the site and close the window, the study will stop.<br>
         <div class="tsm-progress-bar-border">
             <span class="tsm-progress-queue-text" id="tsm-progress-queue-text">Total 0%</span>
             <div class="tsm-progress-queue-content" id="tsm-progress-queue-content"></div>
-        </div> </p>
+        </div>
 
         <?php
         if (isset($tsmSms)) {

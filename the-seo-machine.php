@@ -4,7 +4,7 @@
  * Plugin URI: https://jnjsite.com/the-seo-machine-for-wordpress/
  * License: GPLv2 or later
  * Description: A SEO machine to study and improve your WordPress website.
- * Version: 0.2
+ * Version: 0.3
  * Author: Jaime Niñoles
  * Author URI: https://jnjsite.com/.
  */
@@ -53,7 +53,7 @@ class TheSeoMachine
         add_option('tsm_db_version', 0);
         add_option('tsm_quantity_per_batch', '2');
         add_option('tsm_time_between_batches', '30');
-        add_option('tsm_current_columns_to_show', 'id,url,updated_at,level,title,http_code,time_consumed');
+        add_option('tsm_current_columns_to_show', 'id,url,found_in_url,updated_at,level,title,http_code,time_consumed');
 
         TheSeoMachineDatabase::get_instance()->create_initial_tables();
     }
