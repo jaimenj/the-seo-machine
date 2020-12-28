@@ -37,6 +37,7 @@ class TheSeoMachineAjaxController
         $eav_attributes = TheSeoMachineDatabase::get_instance()->get_eav_attributes();
         $current_columns_to_show = get_option('tsm_current_columns_to_show');
         $current_columns_to_show = explode(',', $current_columns_to_show);
+        $from_sentence = '';
         foreach ($eav_attributes as $key => $value) {
             if (!in_array($key, $current_columns_to_show)) {
                 unset($eav_attributes[$key]);
