@@ -78,6 +78,8 @@ The study is done in batches of URLs studied. When a batch is done, it will slee
 
 == Changelog ==
 
+= v0.4 =
+
 = v0.3 =
 * Adding found_in_url data.
 * Saving also redirections.
