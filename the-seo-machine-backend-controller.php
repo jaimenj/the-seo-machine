@@ -27,23 +27,13 @@ class TheSeoMachineBackendController
         $capability = 'administrator';
         $menu_slug = 'the-seo-machine';
         $function = [$this, 'tsm_main_admin_controller'];
-        $icon_url = 'dashicons-performance';
         $position = null;
 
-        add_menu_page($page_title, $menu_title, $capability, $menu_slug, $function, $icon_url, $position);
+        add_management_page($page_title, $menu_title, $capability, $menu_slug, $function, $position);
     }
 
     public function tsm_main_admin_controller()
     {
-        global $current_page;
-
-        if (isset($_REQUEST['current-page'])) {
-            $current_page = intval($_REQUEST['current-page']);
-        } else {
-            $current_page = 1;
-        }
-        //var_dump($current_page);
-
         $submitting = false;
         foreach ($_REQUEST as $key => $value) {
             if (preg_match('/submit/', $key)) {
