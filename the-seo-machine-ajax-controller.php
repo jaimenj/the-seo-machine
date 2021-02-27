@@ -229,6 +229,8 @@ class TheSeoMachineAjaxController
         } else {
             $status = 'finished';
         }
+
+        // Debug..
         /*$status .= ', '.$num_urls_in_queue.' URLs in queue, '
             .$num_urls_in_queue_not_visited.' not visited, '
             .$num_urls.' URLs studied..';*/

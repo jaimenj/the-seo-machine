@@ -9,6 +9,7 @@ class TheSeoMachineCore
     private $response_html;
     private $current_item;
     private $response;
+    private $base_url;
 
     public static function get_instance()
     {
@@ -34,6 +35,7 @@ class TheSeoMachineCore
         $time_end = microtime(true);
         $time_consumed = $time_end - $time_start;
         $this->response = $response;
+        $this->base_url = $this->_get_base_url($current_item->url);
 
         if (is_array($response) && !is_wp_error($response)) {
             $this->response_html = $response['body'];
@@ -146,7 +148,7 @@ class TheSeoMachineCore
             $new_url = $this->_prepare_new_url($new_url);
 
             if (!empty($new_url)) {
-                if (substr($new_url, 0, strlen(get_site_url())) == get_site_url()) {
+                if (substr($new_url, 0, strlen($this->base_url)) == $this->base_url) {
                     ++$data['qty_internal_links'];
 
                     TheSeoMachineDatabase::get_instance()->save_url_in_queue(
@@ -233,6 +235,13 @@ class TheSeoMachineCore
         return $lines_filtered;
     }
 
+    public function _get_base_url($string)
+    {
+        $result = parse_url($string);
+
+        return $result['scheme'].'://'.$result['host'];
+    }
+
     private function _prepare_new_url($new_url)
     {
         //file_put_contents(__DIR__.'/test.txt', $new_url.PHP_EOL, FILE_APPEND);
@@ -260,12 +269,12 @@ class TheSeoMachineCore
                         $new_url = 'http:'.$new_url;
                     }
                 } elseif ('/' == substr($new_url, 0, 1)) {
-                    $new_url = ('/' == substr(get_site_url(), -1) ? get_site_url() : get_site_url().'/')
+                    $new_url = ('/' == substr($this->base_url, -1) ? $this->base_url : $this->base_url.'/')
                     .substr($new_url, 1, strlen($new_url) - 1);
                 }
             }
 
-            if (get_site_url() == $new_url and '/' != substr($new_url, -1)) {
+            if ($this->base_url == $new_url and '/' != substr($new_url, -1)) {
                 $new_url .= '/';
             }
         } else {

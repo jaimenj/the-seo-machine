@@ -32,6 +32,6 @@
 .tsm-current-columns-to-show-container .tsm-columns-container label{float:left;width:100%;padding-bottom:10px}
 }
 #tsm-submit-save-current-columns{margin-top:20px}
-.tsm-progress-bar-border{width:100%;height:15px;border-radius:10px;overflow:hidden;box-shadow:3px 3px 5px;margin-bottom:17px}
+.tsm-progress-bar-border{width:100%;height:15px;border-radius:10px;overflow:hidden;box-shadow:3px 3px 5px;margin-top:3px;margin-bottom:17px}
 .tsm-progress-queue-content{width:0%;transition:width 1s;background-color:rgba(0,189,0,.7);height:15px;text-align:center;font-weight:700}
 .tsm-progress-queue-text{position:absolute;width:98%;text-align:center;font-weight:700;font-size:15px;line-height:15px;color:#000}
