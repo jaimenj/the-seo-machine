@@ -37,6 +37,7 @@ class TheSeoMachineAjaxController
         $eav_attributes = TheSeoMachineDatabase::get_instance()->get_eav_attributes();
         $current_columns_to_show = get_option('tsm_current_columns_to_show');
         $current_columns_to_show = explode(',', $current_columns_to_show);
+        $from_sentence = '';
         foreach ($eav_attributes as $key => $value) {
             if (!in_array($key, $current_columns_to_show)) {
                 unset($eav_attributes[$key]);
@@ -228,6 +229,8 @@ class TheSeoMachineAjaxController
         } else {
             $status = 'finished';
         }
+
+        // Debug..
         /*$status .= ', '.$num_urls_in_queue.' URLs in queue, '
             .$num_urls_in_queue_not_visited.' not visited, '
             .$num_urls.' URLs studied..';*/

@@ -1,21 +1,27 @@
-'use strict'
+'use strict';
 
-const gulp = require("gulp")
-const { parallel } = require("gulp")
-const sass = require("gulp-sass")
-const cleanCss = require("gulp-clean-css")
-const concat = require('gulp-concat')
-const uglify = require('gulp-uglify-es').default
-const sourcemaps = require('gulp-sourcemaps')
+const gulp = require('gulp');
+const { parallel } = require('gulp');
+const sass = require("gulp-sass");
+const cleanCss = require("gulp-clean-css");
+const concat = require('gulp-concat');
+const terser = require('gulp-terser');
+const strip = require('gulp-strip-comments');
+const removeEmptyLines = require('gulp-remove-empty-lines');
+const sourcemaps = require('gulp-sourcemaps');
 const rename = require('gulp-rename');
+const gulpif = require('gulp-if');
+
+const useSourceMaps = false;
+const useMaximumCompress = false;
 
 function css() {
     return gulp.src('./lib/tsm.scss')
-        .pipe(sourcemaps.init())
+        .pipe(gulpif(useSourceMaps, sourcemaps.init()))
         .pipe(sass())
-        .pipe(cleanCss())
+        .pipe(cleanCss({ format: 'keep-breaks' }))
         .pipe(rename('tsm.min.css'))
-        .pipe(sourcemaps.write())
+        .pipe(gulpif(useSourceMaps, sourcemaps.write()))
         .pipe(gulp.dest('./lib'))
 }
 
@@ -25,10 +31,12 @@ function watchCss() {
 
 function js() {
     return gulp.src('./lib/tsm.js')
-        .pipe(sourcemaps.init())
-        .pipe(uglify())
+        .pipe(gulpif(useSourceMaps, sourcemaps.init()))
+        .pipe(strip())
+        .pipe(removeEmptyLines())
+        .pipe(gulpif(useMaximumCompress, terser()))
         .pipe(concat('tsm.min.js'))
-        .pipe(sourcemaps.write())
+        .pipe(gulpif(useSourceMaps, sourcemaps.write()))
         .pipe(gulp.dest('./lib'))
 }
 

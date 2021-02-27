@@ -4,7 +4,7 @@
  * Plugin URI: https://jnjsite.com/the-seo-machine-for-wordpress/
  * License: GPLv2 or later
  * Description: A SEO machine to study and improve your WordPress website.
- * Version: 0.3
+ * Version: 0.4
  * Author: Jaime Niñoles
  * Author URI: https://jnjsite.com/.
  */
@@ -78,14 +78,16 @@ class TheSeoMachine
      */
     public function enqueue_admin_css_js()
     {
-        wp_enqueue_style('tsm_style_datatables', plugin_dir_url(__FILE__).'lib/datatables.min.css', false, '0.1');
-        wp_enqueue_style('tsm_custom_style', plugin_dir_url(__FILE__).'lib/tsm.min.css', false, '0.1.4');
+        if (isset($_GET['page']) and 'the-seo-machine' == $_GET['page']) {
+            wp_enqueue_style('tsm_style_datatables', plugin_dir_url(__FILE__).'lib/datatables.min.css', false, '0.1');
+            wp_enqueue_style('tsm_custom_style', plugin_dir_url(__FILE__).'lib/tsm.min.css', false, '0.1.4');
 
-        wp_enqueue_script('tsm_script_pdfmake', plugin_dir_url(__FILE__).'lib/pdfmake.min.js', [], '0.1');
-        wp_enqueue_script('tsm_script_vfs_fonts', plugin_dir_url(__FILE__).'lib/vfs_fonts.js', [], '0.1');
-        wp_enqueue_script('tsm_script_datatables', plugin_dir_url(__FILE__).'lib/datatables.min.js', [], '0.1');
-        wp_enqueue_script('tsm_script_chart', plugin_dir_url(__FILE__).'lib/Chart.min.js', [], '0.1');
-        wp_enqueue_script('tsm_custom_script', plugin_dir_url(__FILE__).'lib/tsm.min.js', [], '0.1.4');
+            wp_enqueue_script('tsm_script_pdfmake', plugin_dir_url(__FILE__).'lib/pdfmake.min.js', [], '0.1');
+            wp_enqueue_script('tsm_script_vfs_fonts', plugin_dir_url(__FILE__).'lib/vfs_fonts.js', [], '0.1');
+            wp_enqueue_script('tsm_script_datatables', plugin_dir_url(__FILE__).'lib/datatables.min.js', [], '0.1');
+            wp_enqueue_script('tsm_script_chart', plugin_dir_url(__FILE__).'lib/Chart.min.js', [], '0.1');
+            wp_enqueue_script('tsm_custom_script', plugin_dir_url(__FILE__).'lib/tsm.min.js', [], '0.1.4');
+        }
     }
 }
 
