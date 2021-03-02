@@ -66,10 +66,11 @@ class TheSeoMachineBackendController
         }
 
         // Main options..
+        $tsm_db_version = get_option('tsm_db_version');
         $quantity_per_batch = get_option('tsm_quantity_per_batch');
         $time_between_batches = get_option('tsm_time_between_batches');
         $current_columns_to_show = get_option('tsm_current_columns_to_show');
-        $tsm_db_version = get_option('tsm_db_version');
+        $crawl_type = get_option('tsm_crawl_type');
 
         include TSM_PATH.'view/main.php';
     }
@@ -78,6 +79,7 @@ class TheSeoMachineBackendController
     {
         update_option('tsm_quantity_per_batch', intval($_REQUEST['quantity_per_batch']));
         update_option('tsm_time_between_batches', intval($_REQUEST['time_between_batches']));
+        update_option('tsm_crawl_type', sanitize_text_field($_REQUEST['crawl_type']));
 
         return '<div id="message" class="notice notice-success is-dismissible"><p>Main options saved!</p></div>';
     }

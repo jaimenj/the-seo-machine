@@ -100,6 +100,13 @@ data-tsm_ajax_url="<?= admin_url('admin-ajax.php') ?>">
                     <option value="60"<?= (60 == $time_between_batches ? ' selected' : ''); ?>>60s</option>
                     <option value="120"<?= (120 == $time_between_batches ? ' selected' : ''); ?>>120s</option>
                 </select>
+
+                <label for="crawl_type">Crawl type</label>
+                <select name="crawl_type" id="crawl_type">
+                    <option value="in-width"<?= ('in-width' == $crawl_type ? ' selected' : ''); ?>>In width</option>
+                    <option value="in-depth"<?= ('in-depth' == $crawl_type ? ' selected' : ''); ?>>In depth</option>
+                    <option value="random"<?= ('random' == $crawl_type ? ' selected' : ''); ?>>Random</option>
+                </select>
             </div>
             <div class="tsm-footer-actions-container-right">
                 <button type="submit" name="tsm-submit-reset-queue" id="tsm-submit-reset-queue" class="button button-red button-reset-queue">Reset Queue</button>
