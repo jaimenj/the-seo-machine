@@ -8,9 +8,9 @@ A SEO machine to study and improve your WordPress website.
 
 * Tags: wordpress, seo
 * Requires at least: 5.0
-* Tested up to: 5.5
-* Requires PHP: 7.2
-* Stable tag: 0.3
+* Tested up to: 5.6
+* Requires PHP: 7.3
+* Stable tag: 0.4
 * License: GPLv2 or later
 * Repository URL: https://github.com/jaimenj/the-seo-machine
 * Plugin URI: https://jnjsite.com/the-seo-machine-for-wordpress/
