@@ -50,12 +50,14 @@ class TheSeoMachine
         register_setting('tsm_options_group', 'tsm_time_between_batches');
         register_setting('tsm_options_group', 'tsm_current_columns_to_show');
         register_setting('tsm_options_group', 'tsm_crawl_type');
+        register_setting('tsm_options_group', 'tsm_autoreload_datatables');
 
         add_option('tsm_db_version', 0);
         add_option('tsm_quantity_per_batch', '2');
         add_option('tsm_time_between_batches', '30');
         add_option('tsm_current_columns_to_show', 'id,url,found_in_url,updated_at,level,title,http_code,time_consumed');
         add_option('tsm_crawl_type', 'in-width');
+        add_option('tsm_autoreload_datatables', -1);
 
         TheSeoMachineDatabase::get_instance()->create_initial_tables();
     }

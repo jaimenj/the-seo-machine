@@ -71,6 +71,7 @@ class TheSeoMachineBackendController
         $time_between_batches = get_option('tsm_time_between_batches');
         $current_columns_to_show = get_option('tsm_current_columns_to_show');
         $crawl_type = get_option('tsm_crawl_type');
+        $autoreload_datatables = get_option('tsm_autoreload_datatables');
 
         include TSM_PATH.'view/main.php';
     }
@@ -80,6 +81,7 @@ class TheSeoMachineBackendController
         update_option('tsm_quantity_per_batch', intval($_REQUEST['quantity_per_batch']));
         update_option('tsm_time_between_batches', intval($_REQUEST['time_between_batches']));
         update_option('tsm_crawl_type', sanitize_text_field($_REQUEST['crawl_type']));
+        update_option('tsm_autoreload_datatables', intval($_REQUEST['autoreload_datatables']));
 
         return '<div id="message" class="notice notice-success is-dismissible"><p>Main options saved!</p></div>';
     }

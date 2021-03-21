@@ -1,8 +1,8 @@
 .tsm-icon{width:30px;height:30px;font-size:30px}
 .tsm-footer-actions-container{display:flex}
-.tsm-footer-actions-container div{width:100%;margin-top:20px}
-.tsm-footer-actions-container-left{text-align:left}
-.tsm-footer-actions-container-right{text-align:right}
+.tsm-footer-actions-container div{margin-top:20px}
+.tsm-footer-actions-container-left{width:75%;text-align:left}
+.tsm-footer-actions-container-right{width:25%;text-align:right}
 #tsm-box-study-site-status{line-height:30px;margin-left:5px}
 .tsm-btn-submit{margin-right:5px!important}
 .tsm-btn-study-site{display:inline-block;text-decoration:none;font-size:15px;font-weight:700;line-height:2.15384615;min-height:30px;margin:0;padding:0 10px;cursor:pointer;border-radius:3px;white-space:nowrap;box-sizing:border-box;border:none;color:#fff;background-color:green}

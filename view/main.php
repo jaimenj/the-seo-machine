@@ -107,6 +107,16 @@ data-tsm_ajax_url="<?= admin_url('admin-ajax.php') ?>">
                     <option value="in-depth"<?= ('in-depth' == $crawl_type ? ' selected' : ''); ?>>In depth</option>
                     <option value="random"<?= ('random' == $crawl_type ? ' selected' : ''); ?>>Random</option>
                 </select>
+
+                <label for="autoreload_datatables">Auto reload Datatables</label>
+                <select name="autoreload_datatables" id="autoreload_datatables">
+                    <option value="-1"<?= (-1 == $autoreload_datatables ? ' selected' : ''); ?>>No</option>
+                    <option value="5"<?= (5 == $autoreload_datatables ? ' selected' : ''); ?>>5s</option>
+                    <option value="10"<?= (10 == $autoreload_datatables ? ' selected' : ''); ?>>10s</option>
+                    <option value="30"<?= (30 == $autoreload_datatables ? ' selected' : ''); ?>>30s</option>
+                    <option value="60"<?= (60 == $autoreload_datatables ? ' selected' : ''); ?>>60s</option>
+                    <option value="120"<?= (120 == $autoreload_datatables ? ' selected' : ''); ?>>120s</option>
+                </select>
             </div>
             <div class="tsm-footer-actions-container-right">
                 <button type="submit" name="tsm-submit-reset-queue" id="tsm-submit-reset-queue" class="button button-red button-reset-queue">Reset Queue</button>
