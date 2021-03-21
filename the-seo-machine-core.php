@@ -289,7 +289,10 @@ class TheSeoMachineCore
                     }
                 } elseif ('/' == substr($new_url, 0, 1)) {
                     $new_url = ('/' == substr($this->base_url, -1) ? $this->base_url : $this->base_url.'/')
-                    .substr($new_url, 1, strlen($new_url) - 1);
+                        .substr($new_url, 1, strlen($new_url) - 1);
+                } else {
+                    $new_url = ('/' == substr($this->current_item->url, -1) ? $this->current_item->url : $this->current_item->url.'/')
+                        .$new_url;
                 }
             }
 
