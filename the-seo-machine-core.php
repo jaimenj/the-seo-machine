@@ -25,7 +25,7 @@ class TheSeoMachineCore
         $this->dom = new \DOMDocument();
     }
 
-    public function study($current_item)
+    public function study($current_item, $debug = false)
     {
         global $wpdb;
         $this->current_item = $current_item;
@@ -37,13 +37,22 @@ class TheSeoMachineCore
         $this->response = $response;
         $this->base_url = $this->_get_base_url($current_item->url);
 
+        if ($debug) {
+            echo 'TSM> URL = '.$current_item->url.PHP_EOL
+                .'TSM> base URL = '.$this->base_url.PHP_EOL;
+        }
+
         if (is_array($response) && !is_wp_error($response)) {
             $this->response_html = $response['body'];
             $http_code = $response['response']['code'];
 
+            if ($debug) {
+                echo 'TSM> http_code = '.$http_code.PHP_EOL;
+            }
+
             // Check if it is a redirection..
             if ($http_code >= 300 and $http_code <= 399) {
-                $new_url = $this->_prepare_new_url($response['headers']['location']);
+                $new_url = $this->_prepare_new_url($response['headers']['location'], $debug);
 
                 TheSeoMachineDatabase::get_instance()->save_url_in_queue(
                     $new_url,
@@ -54,14 +63,14 @@ class TheSeoMachineCore
 
             // If it's a normal URL or also a redirection, saving..
             $data = [
-                    'url' => $current_item->url,
-                    'found_in_url' => $current_item->found_in_url,
-                    'updated_at' => date('Y-m-d H:i:s'),
-                    'level' => $current_item->level,
-                    'time_consumed' => $time_consumed,
-                ];
+                'url' => $current_item->url,
+                'found_in_url' => $current_item->found_in_url,
+                'updated_at' => date('Y-m-d H:i:s'),
+                'level' => $current_item->level,
+                'time_consumed' => $time_consumed,
+            ];
 
-            $this->_prepare_url_insights_data($data);
+            $this->_prepare_url_insights_data($data, $debug);
             $this->_prepare_url_ttfb_data($data);
             $this->_prepare_url_technics_data($data);
 
@@ -80,7 +89,7 @@ class TheSeoMachineCore
         }
     }
 
-    private function _prepare_url_insights_data(&$data)
+    private function _prepare_url_insights_data(&$data, $debug = false)
     {
         $dom = $this->dom;
         @$dom->loadHTML($this->response_html);
@@ -145,7 +154,7 @@ class TheSeoMachineCore
         $data['qty_internal_links'] = $data['qty_external_links'] = $data['qty_targeted_links'] = 0;
         foreach ($dom->getElementsByTagName('a') as $linkNode) {
             $new_url = $linkNode->getAttribute('href');
-            $new_url = $this->_prepare_new_url($new_url);
+            $new_url = $this->_prepare_new_url($new_url, $debug);
 
             if (!empty($new_url)) {
                 if (substr($new_url, 0, strlen($this->base_url)) == $this->base_url) {
@@ -156,8 +165,16 @@ class TheSeoMachineCore
                         $this->current_item->level + 1,
                         $this->current_item->url
                     );
+
+                    if ($debug) {
+                        echo 'TSM> internal link found = '.$new_url.PHP_EOL;
+                    }
                 } else {
                     ++$data['qty_external_links'];
+
+                    if ($debug) {
+                        echo 'TSM> external link found = '.$new_url.PHP_EOL;
+                    }
                 }
                 if ($linkNode->getAttribute('target')) {
                     ++$data['qty_targeted_links'];
@@ -242,9 +259,11 @@ class TheSeoMachineCore
         return $result['scheme'].'://'.$result['host'];
     }
 
-    private function _prepare_new_url($new_url)
+    private function _prepare_new_url($new_url, $debug = false)
     {
-        //file_put_contents(__DIR__.'/test.txt', $new_url.PHP_EOL, FILE_APPEND);
+        if ($debug) {
+            echo 'TSM> '.$new_url;
+        }
 
         if (!empty(trim($new_url))
         and '#' != substr($new_url, 0, 1)
@@ -254,13 +273,13 @@ class TheSeoMachineCore
         and 'skype:' != substr($new_url, 0, 6)
         and 'javascript:' != substr($new_url, 0, 11)
         and 'whatsapp:' != substr($new_url, 0, 9)) {
-            // remove query string
+            // Remove query string..
             $new_url = preg_replace('/\?.*/', '', $new_url);
 
-            // remove anchors
+            // Remove anchors..
             $new_url = preg_replace('/#.*/', '', $new_url);
 
-            // relative and absolute URLs
+            // Relative and absolute URLs..
             if ('http' != substr($new_url, 0, 4)) {
                 if ('//' == substr($new_url, 0, 2)) {
                     if ('https' == substr($this->current_item->url, 0, 5)) {
@@ -274,6 +293,7 @@ class TheSeoMachineCore
                 }
             }
 
+            // Add / to the home URL..
             if ($this->base_url == $new_url and '/' != substr($new_url, -1)) {
                 $new_url .= '/';
             }
@@ -281,7 +301,9 @@ class TheSeoMachineCore
             $new_url = '';
         }
 
-        //file_put_contents(__DIR__.'/test.txt', ' => '.$new_url.PHP_EOL, FILE_APPEND);
+        if ($debug) {
+            echo ' => '.$new_url.PHP_EOL;
+        }
 
         return $new_url;
     }
